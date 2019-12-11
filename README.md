@@ -6,10 +6,7 @@
 ## Coverage Tool
 ### dotcover
 ```
-dotcover cover /TargetExecutable="D:\Program Files\NUnit 2.6\bin\nunit-console.exe"
-  /TargetArguments="D:\Projects\TheApplication\bin\Debug\AppTests.dll"
-  /Output="AppCoverageReport.html"
-  /ReportType="HTML"
+./dotcover cover /TargetExecutable="D:\Tool\JetBrains.dotCover.CommandLineTools.2019.2.3\xunit.runner.console.2.2.0\tools\xunit.console.x86.exe" /TargetArguments="D:\Tool\JetBrains.dotCover.CommandLineTools.2019.2.3\bin\Debug\NineYi.Scm.ApiV2.BL.Services.Test.Xunit.dll" /Output="AppCoverageReport.json" /ReportType="JSON"
 ```
 - ReportType  
 [HTML|JSON|XML|DetailedXML|NDependXML]. A type of the report. XML by default
