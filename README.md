@@ -6,7 +6,7 @@
 ## Coverage Tool
 ### dotcover
 ```
-./dotcover cover /TargetExecutable="D:\Tool\JetBrains.dotCover.CommandLineTools.2019.2.3\xunit.runner.console.2.2.0\tools\xunit.console.x86.exe" /TargetArguments="D:\Tool\JetBrains.dotCover.CommandLineTools.2019.2.3\bin\Debug\NineYi.Scm.ApiV2.BL.Services.Test.Xunit.dll" /Output="AppCoverageReport.json" /ReportType="JSON"
+./dotcover cover /TargetExecutable="C:\Program Files\dotnet\dotnet.exe" /TargetArguments="..\..\src\Phanerozoic.Core.Test\bin\Debug\netcoreapp3.1" /Output="AppCoverageReport.json" /ReportType="JSON"
 ```
 - ReportType  
 [HTML|JSON|XML|DetailedXML|NDependXML]. A type of the report. XML by default
@@ -16,7 +16,7 @@
 
 ### coverlet
 ```
-coverlet "D:\Code\Taiwan\NineYi.Sms\Test\BL.Services.Test.Xunit\bin\Debug\NineYi.Sms.Validators.Test.Xunit.dll" --target "D:\Code\Taiwan\NineYi.Sms\packages\xunit.runner.console.2.2.0\tools\xunit.console.exe"
+coverlet "dotnet" --target "Phanerozoic.Core.Test.dll"
 ```
 
 > [GitHub](https://github.com/tonerdo/coverlet)
