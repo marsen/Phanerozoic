@@ -1,12 +1,27 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Services;
 
 namespace Phanerozoic.Console
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            System.Console.WriteLine("Hello World!");
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddScoped<ICoverageProcessor, CoverageProcessor>();
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            var reportEntity = new ReportEntity
+            {
+                FilePath = args[0]
+            };
+
+            var coverageProcessor = serviceProvider.GetService<ICoverageProcessor>();
+            coverageProcessor.Process(reportEntity);
+
+            serviceProvider.Dispose();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Phanerozoic.Core.Services
             {
                 Console.WriteLine("Not Found");
             }
-            Console.WriteLine("Run");
+            Console.WriteLine($"Run {reportEntity.FilePath}");
         }
     }
 }
