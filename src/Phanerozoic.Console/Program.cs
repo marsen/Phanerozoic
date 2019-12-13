@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Helpers;
 using Phanerozoic.Core.Services;
 
 namespace Phanerozoic.Console
@@ -10,6 +11,8 @@ namespace Phanerozoic.Console
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddScoped<ICoverageProcessor, CoverageProcessor>();
+            serviceCollection.AddScoped<IFileHelper, FileHelper>();
+            serviceCollection.AddScoped<IReportParser, ReportParser>();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
