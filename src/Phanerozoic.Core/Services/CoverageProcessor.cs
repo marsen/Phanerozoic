@@ -1,7 +1,6 @@
 ﻿using Phanerozoic.Core.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Phanerozoic.Core.Services
 {
@@ -9,7 +8,11 @@ namespace Phanerozoic.Core.Services
     {
         public void Process(ReportEntity reportEntity)
         {
-            throw new NotImplementedException();
+            if (File.Exists(reportEntity.FilePath))
+            {
+                Console.WriteLine("Not Found");
+            }
+            Console.WriteLine("Run");
         }
     }
 }
