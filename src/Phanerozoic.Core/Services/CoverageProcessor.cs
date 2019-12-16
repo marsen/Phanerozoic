@@ -16,13 +16,15 @@ namespace Phanerozoic.Core.Services
             this._reportParser = serviceProvider.GetRequiredService<IReportParser>();
         }
 
-        public void Process(ReportEntity reportEntity)
+        public bool Process(ReportEntity reportEntity)
         {
-            if (this._fileHelper.Exists(reportEntity.FilePath))
+            if (this._fileHelper.Exists(reportEntity.FilePath) == false)
             {
                 Console.WriteLine("Not Found");
+                return false;
             }
             Console.WriteLine($"Run {reportEntity.FilePath}");
+            return true;
         }
     }
 }

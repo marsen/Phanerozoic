@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Phanerozoic.Core.Entities;
@@ -24,9 +25,11 @@ namespace Phanerozoic.Core.Test.Services
             this._subServiceProvider.GetService<IReportParser>().Returns(this._subReportParser);
         }
 
-        [Fact]
+        [Fact(DisplayName = "標準流程")]
         public void Test_Process_Flow()
         {
+            //// arrange
+            this._subFileHelper.Exists(Arg.Any<string>()).Returns(true);
             var reportEntity = new ReportEntity
             {
                 FilePath = "report.json"
@@ -34,14 +37,33 @@ namespace Phanerozoic.Core.Test.Services
 
             var target = GetTarget();
 
-            ////// act
-            target.Process(reportEntity);
+            //// act
+            var actual = target.Process(reportEntity);
 
             //// assert
-            Assert.True(true);
+            actual.Should().BeTrue();
         }
 
-        private ICoverageProcessor GetTarget()
+        [Fact(DisplayName = "檔案不存在")]
+        public void Test_Process_Flow_FileNotFound()
+        {
+            //// arrange
+            this._subFileHelper.Exists(Arg.Any<string>()).Returns(false);
+            var reportEntity = new ReportEntity
+            {
+                FilePath = "report.json"
+            };
+
+            var target = GetTarget();
+
+            //// act
+            var actual = target.Process(reportEntity);
+
+            //// assert
+            actual.Should().BeFalse();
+        }
+
+        private CoverageProcessor GetTarget()
         {
             return new CoverageProcessor(this._subServiceProvider);
         }
