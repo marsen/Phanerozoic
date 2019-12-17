@@ -12,7 +12,7 @@ namespace Phanerozoic.Console
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddScoped<ICoverageProcessor, CoverageProcessor>();
             serviceCollection.AddScoped<IFileHelper, FileHelper>();
-            serviceCollection.AddScoped<IReportParser, ReportParser>();
+            serviceCollection.AddScoped<IReportParser, DotCoverParser>();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
