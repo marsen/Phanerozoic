@@ -1,4 +1,6 @@
 # Phanerozoic
+Parser, Update and Notify.
+
 
 ## Naming
 > [顯生宙](https://zh.wikipedia.org/wiki/%E6%98%BE%E7%94%9F%E5%AE%99)  
@@ -17,12 +19,23 @@
 
 ### coverlet
 ```
+# 安裝
+dotnet tool install --global coverlet.console
+
+# 執行
 coverlet "dotnet" --target "Phanerozoic.Core.Test.dll"
 ```
 
 > [GitHub](https://github.com/tonerdo/coverlet)  
 > [Docker 教學 - .NET Core 測試報告 (Coverlet + ReportGenerator)](https://blog.johnwu.cc/article/docker-dotnet-coverage-report-generator.html)  
 
-### ReportGenerator
+#### ReportGenerator
+```
+# 安裝
+dotnet tool install -g dotnet-reportgenerator-globaltool
+
+# 執行
+reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targetdir:./output/report
+```
 
 > [GitHub](https://github.com/danielpalme/ReportGenerator)  
