@@ -6,7 +6,7 @@
 ## Coverage Tool
 ### dotcover
 ```
-../../../../../Tools/JetBrains.dotCover.CommandLineTools.2019.2.3/dotcover cover /TargetExecutable="C:\Program Files\dotnet\dotnet.exe" /TargetArguments="test ./Phanerozoic.Core.Test.dll" /Output="AppCoverageReport.html" /ReportType="HTML"
+../../../../../lib/JetBrains.dotCover.CommandLineTools.2019.2.3/dotcover cover /TargetExecutable="C:\Program Files\dotnet\dotnet.exe" /TargetArguments="test ./Phanerozoic.Core.Test.dll" /Output="AppCoverageReport.html" /ReportType="HTML"
 ```
 - ReportType  
 [HTML|JSON|XML|DetailedXML|NDependXML]. A type of the report. XML by default

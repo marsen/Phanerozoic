@@ -1,0 +1,2 @@
+## HTML JSON
+..\lib\JetBrains.dotCover.CommandLineTools.2019.2.3\dotcover cover /TargetExecutable="C:\Program Files\dotnet\dotnet.exe" /TargetArguments="test ..\src\Phanerozoic.Core.Test\bin\Debug\netcoreapp3.1\Phanerozoic.Core.Test.dll" /Output=".\output\report.json" /ReportType="JSON"
