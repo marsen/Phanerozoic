@@ -5,6 +5,7 @@ using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using Phanerozoic.Core.Services;
 using System;
+using System.IO;
 using Xunit;
 
 namespace Phanerozoic.Core.Test.Services
@@ -25,7 +26,7 @@ namespace Phanerozoic.Core.Test.Services
             this._subServiceProvider.GetService<IReportParser>().Returns(this._subReportParser);
         }
 
-        [Fact(DisplayName = "標準流程")]
+        [Fact(DisplayName = "Happy Path")]
         public void Test_Process_Flow()
         {
             //// arrange
@@ -38,10 +39,10 @@ namespace Phanerozoic.Core.Test.Services
             var target = GetTarget();
 
             //// act
-            var actual = target.Process(reportEntity);
+            target.Process(reportEntity);
 
             //// assert
-            actual.Should().BeTrue();
+            this._subReportParser.Received(1).Parser(Arg.Any<ReportEntity>());
         }
 
         [Fact(DisplayName = "檔案不存在")]
@@ -57,10 +58,12 @@ namespace Phanerozoic.Core.Test.Services
             var target = GetTarget();
 
             //// act
-            var actual = target.Process(reportEntity);
+            Action action = () => target.Process(reportEntity);
 
             //// assert
-            actual.Should().BeFalse();
+            action.Should()
+                  .Throw<FileNotFoundException>()
+                  .WithMessage("File Not Found!");
         }
 
         private CoverageProcessor GetTarget()

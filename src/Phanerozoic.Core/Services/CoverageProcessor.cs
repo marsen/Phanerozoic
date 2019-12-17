@@ -2,6 +2,7 @@
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using System;
+using System.IO;
 
 namespace Phanerozoic.Core.Services
 {
@@ -16,15 +17,16 @@ namespace Phanerozoic.Core.Services
             this._reportParser = serviceProvider.GetRequiredService<IReportParser>();
         }
 
-        public bool Process(ReportEntity reportEntity)
+        public void Process(ReportEntity reportEntity)
         {
             if (this._fileHelper.Exists(reportEntity.FilePath) == false)
             {
                 Console.WriteLine("Not Found");
-                return false;
+                throw new FileNotFoundException("File Not Found!", reportEntity.FilePath);
             }
+
             Console.WriteLine($"Run {reportEntity.FilePath}");
-            return true;
+            this._reportParser.Parser(reportEntity);
         }
     }
 }
