@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Phanerozoic.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "a.json"
+    }
+  }
+}

@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+lib/JetBrains.dotCover.CommandLineTools.2019.2.3
+extras/output
