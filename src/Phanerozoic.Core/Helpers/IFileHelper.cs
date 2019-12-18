@@ -3,5 +3,7 @@
     public interface IFileHelper
     {
         bool Exists(string path);
+
+        string ReadAllText(string path);
     }
 }
