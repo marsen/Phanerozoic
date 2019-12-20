@@ -1,0 +1,2 @@
+## /ReportType HTML JSON
+..\lib\JetBrains.dotCover.CommandLineTools.2019.2.3\dotcover cover /TargetExecutable="D:\Code\Taiwan\NineYi.WebStore.MobileWebMall\packages\xunit.runner.console.2.2.0\tools\xunit.console.exe" /TargetArguments="D:\Code\Taiwan\NineYi.WebStore.MobileWebMall\WebStore\Frontend\BLV2.Test.Xunit\bin\Debug\NineYi.WebStore.Frontend.BLV2.Test.Xunit.dll" /Output=".\output\dotCover.html" /ReportType="HTML"

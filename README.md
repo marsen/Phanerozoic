@@ -39,3 +39,7 @@ reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targ
 ```
 
 > [GitHub](https://github.com/danielpalme/ReportGenerator)  
+
+#### Open Cover
+
+> [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)

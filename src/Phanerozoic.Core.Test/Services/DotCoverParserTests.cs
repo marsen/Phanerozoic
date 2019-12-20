@@ -4,7 +4,7 @@ using NSubstitute;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Text.Json;
 using Xunit;
 
@@ -27,9 +27,75 @@ namespace Phanerozoic.Core.Services.Tests
         public void ParserTest()
         {
             //// arrange
-            var report = new DotCoverReport();
-            string json = JsonSerializer.Serialize(report);
-            this._subFileHelper.ReadAllText(Arg.Any<string>()).Returns(json);
+            var report = new DotCoverReport
+            {
+                DotCoverVersion = "2019.2.3",
+                Kind = Kind.Root,
+                CoveredStatements = 11937,
+                TotalStatements = 160364,
+                CoveragePercent = 7,
+                Children = new List<DotCoverReportChild>
+                {
+                    new DotCoverReportChild
+                    {
+                        Kind = Kind.Assembly,
+                        Name = "Phanerozoic.Core",
+                        CoveredStatements = 11937,
+                        TotalStatements = 160364,
+                        CoveragePercent = 7,
+                        Children = new List<DotCoverReportChild>
+                        {
+                            new DotCoverReportChild
+                            {
+                                Kind = Kind.Assembly,
+                                Name = "Phanerozoic.Core",
+                                CoveredStatements = 11937,
+                                TotalStatements = 160364,
+                                CoveragePercent = 7,
+                                Children = new List<DotCoverReportChild>
+                                {
+                                    new DotCoverReportChild
+                                    {
+                                        Kind = Kind.Namespace,
+                                        Name = "Phanerozoic.Core.Services",
+                                        CoveredStatements = 22,
+                                        TotalStatements = 11,
+                                        CoveragePercent = 7,
+                                        Children = new List<DotCoverReportChild>
+                                        {
+                                            new DotCoverReportChild
+                                            {
+                                                Kind = Kind.Type,
+                                                Name = "DotCoverParser",
+                                                CoveredStatements = 22,
+                                                TotalStatements = 11,
+                                                CoveragePercent = 7,
+                                                Children = new List<DotCoverReportChild>
+                                                {
+                                                    new DotCoverReportChild
+                                                    {
+                                                        Kind = Kind.Method,
+                                                        Name = "Parser(ReportEntity):List<CoverageEntity>",
+                                                        CoveredStatements = 22,
+                                                        TotalStatements = 11,
+                                                        CoveragePercent = 7,
+                                                        Children = new List<DotCoverReportChild>
+                                                        {
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                        }
+                                    },
+                                }
+                            },
+                        }
+                    },
+                }
+            };
+            string reportJson = JsonSerializer.Serialize(report);
+
+            this._subFileHelper.ReadAllText(Arg.Any<string>()).Returns(reportJson);
 
             var reportEntity = new ReportEntity
             {
