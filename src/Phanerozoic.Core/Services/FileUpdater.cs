@@ -3,6 +3,7 @@ using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Phanerozoic.Core.Services
 {
@@ -15,11 +16,14 @@ namespace Phanerozoic.Core.Services
             this._fileHelper = serviceProvider.GetService<IFileHelper>();
         }
 
-        public void Update(List<CoverageEntity> coverageList)
+        public void Update(CoverageEntity coverageEntity, List<MethodEntity> methodList)
         {
-            string contents = null;
+            var stringBuilder = new StringBuilder();
+            methodList.ForEach(i => stringBuilder.AppendLine(i.ToString()));
 
-            this._fileHelper.WriteAllText("", contents);
+            string contents = stringBuilder.ToString();
+
+            this._fileHelper.WriteAllText("a.txt", contents);
         }
     }
 }

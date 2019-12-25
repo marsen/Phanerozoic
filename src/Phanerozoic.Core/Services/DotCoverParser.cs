@@ -16,12 +16,12 @@ namespace Phanerozoic.Core.Services
             this._fileHelper = serviceProvider.GetRequiredService<IFileHelper>();
         }
 
-        public List<CoverageEntity> Parser(ReportEntity reportEntity)
+        public List<MethodEntity> Parser(ReportEntity reportEntity)
         {
             var json = this._fileHelper.ReadAllText(reportEntity.FilePath);
             var report = JsonSerializer.Deserialize<DotCoverReport>(json);
 
-            var result = new List<CoverageEntity>();
+            var result = new List<MethodEntity>();
             FindMethod(result, string.Empty, report.Children);
 
             return result;
@@ -32,7 +32,7 @@ namespace Phanerozoic.Core.Services
         /// </summary>
         /// <param name="result">回傳值</param>
         /// <param name="source">目前的階層</param>
-        private void FindMethod(List<CoverageEntity> result, string fullName, List<DotCoverReportChild> source)
+        private void FindMethod(List<MethodEntity> result, string fullName, List<DotCoverReportChild> source)
         {
             if (source == null)
             {
@@ -43,7 +43,7 @@ namespace Phanerozoic.Core.Services
             {
                 if (item.Kind == Kind.Method)
                 {
-                    var covearge = new CoverageEntity
+                    var covearge = new MethodEntity
                     {
                         Class = fullName.Remove(fullName.Length - 1, 1),
                         Method = item.Name,

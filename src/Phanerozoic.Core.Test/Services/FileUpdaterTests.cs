@@ -26,11 +26,15 @@ namespace Phanerozoic.Core.Test.Services
         public void Test_Update_Flow()
         {
             //// Arrange
-            var coverageList = new List<CoverageEntity>();
+            var methodList = new List<MethodEntity>();
+            var coverageEntity = new CoverageEntity
+            {
+                FilePath = "a.txt"
+            };
 
             //// Act
             var target = new FileUpdater(this._subServiceProvider);
-            target.Update(coverageList);
+            target.Update(coverageEntity, methodList);
 
             //// Assert
             this._subFileHelper.Received(1).WriteAllText(Arg.Any<string>(), Arg.Any<string>());
