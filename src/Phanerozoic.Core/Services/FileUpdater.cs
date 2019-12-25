@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Phanerozoic.Core.Services
 {
-    public class FileUpdater
+    public class FileUpdater : ICoverageUpdater
     {
         private IFileHelper _fileHelper;
 

@@ -10,14 +10,16 @@ namespace Phanerozoic.Core.Services
     {
         private readonly IFileHelper _fileHelper;
         private readonly IReportParser _reportParser;
+        private readonly ICoverageUpdater _coverageUpdater;
 
         public CoverageProcessor(IServiceProvider serviceProvider)
         {
             this._fileHelper = serviceProvider.GetRequiredService<IFileHelper>();
             this._reportParser = serviceProvider.GetRequiredService<IReportParser>();
+            this._coverageUpdater = serviceProvider.GetRequiredService<ICoverageUpdater>();
         }
 
-        public void Process(ReportEntity reportEntity)
+        public void Process(ReportEntity reportEntity, CoverageEntity coverageEntity)
         {
             if (this._fileHelper.Exists(reportEntity.FilePath) == false)
             {
@@ -26,7 +28,9 @@ namespace Phanerozoic.Core.Services
             }
 
             Console.WriteLine($"Run {reportEntity.FilePath}");
-            this._reportParser.Parser(reportEntity);
+            var methodList = this._reportParser.Parser(reportEntity);
+
+            this._coverageUpdater.Update(coverageEntity, methodList);
         }
     }
 }

@@ -20,9 +20,13 @@ namespace Phanerozoic.Console
             {
                 FilePath = args[0]
             };
+            var coverageEntity = new CoverageEntity
+            {
+                FilePath = args[1]
+            };
 
             var coverageProcessor = serviceProvider.GetService<ICoverageProcessor>();
-            coverageProcessor.Process(reportEntity);
+            coverageProcessor.Process(reportEntity, coverageEntity);
 
             serviceProvider.Dispose();
         }
