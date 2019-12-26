@@ -49,3 +49,12 @@ reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targ
 #### Open Cover
 
 > [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)
+
+## Parser  
+
+## Update  
+#### Google Sheets
+> [Google Sheets API](https://developers.google.com/sheets/api/quickstart/dotnet)
+
+## Notify  
+#### Slack  
