@@ -32,7 +32,7 @@ namespace Phanerozoic.Core.Services
         /// </summary>
         /// <param name="result">回傳值</param>
         /// <param name="source">目前的階層</param>
-        private void FindMethod(List<MethodEntity> result, string fullName, List<DotCoverReportChild> source)
+        private void FindMethod(List<MethodEntity> result, string parentName, List<DotCoverReportChild> source)
         {
             if (source == null)
             {
@@ -41,11 +41,12 @@ namespace Phanerozoic.Core.Services
 
             foreach (var item in source)
             {
+                var iName = parentName;
                 if (item.Kind == Kind.Method)
                 {
                     var covearge = new MethodEntity
                     {
-                        Class = fullName.Remove(fullName.Length - 1, 1),
+                        Class = iName.Remove(iName.Length - 1, 1),
                         Method = item.Name,
                         Coverage = (int)item.CoveragePercent,
                     };
@@ -53,12 +54,12 @@ namespace Phanerozoic.Core.Services
                 }
                 else if (item.Kind == Kind.Assembly)
                 {
-                    FindMethod(result, fullName, item.Children);
+                    FindMethod(result, iName, item.Children);
                 }
                 else
                 {
-                    fullName += $"{item.Name}.";
-                    FindMethod(result, fullName, item.Children);
+                    iName += $"{item.Name}.";
+                    FindMethod(result, iName, item.Children);
                 }
             }
         }
