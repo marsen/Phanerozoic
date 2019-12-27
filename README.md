@@ -43,16 +43,13 @@ dotnet tool install -g dotnet-reportgenerator-globaltool
 # 執行
 reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targetdir:./output/report
 ```
-
 > [GitHub](https://github.com/danielpalme/ReportGenerator)  
 
-#### Open Cover
-
-> [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)
-
 ## Parse  
+涵蓋率格式
 - dotCover
 - opencover
+> [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)
 
 ## Update  
 #### Google Sheets
