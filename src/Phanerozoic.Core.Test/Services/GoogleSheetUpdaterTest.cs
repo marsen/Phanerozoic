@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
@@ -12,14 +13,18 @@ namespace Phanerozoic.Core.Test.Services
     public class GoogleSheetUpdaterTest
     {
         private readonly IFileHelper _subFileHelper;
+        private readonly IConfiguration _subConfiguration;
         private readonly IServiceProvider _subServiceProvider;
 
         public GoogleSheetUpdaterTest()
         {
             this._subFileHelper = Substitute.For<IFileHelper>();
+            this._subConfiguration = Substitute.For<IConfiguration>();
 
             this._subServiceProvider = Substitute.For<IServiceProvider>();
             this._subServiceProvider.GetService<IFileHelper>().Returns(this._subFileHelper);
+            this._subServiceProvider.GetService<IConfiguration>().Returns(this._subConfiguration);
+
         }
 
         [Fact]
@@ -28,11 +33,15 @@ namespace Phanerozoic.Core.Test.Services
             //// Arrange
             var coverageEntity = new CoverageEntity();
             var methodList = new List<MethodEntity>();
+
+            this._subConfiguration["Google.Sheet.SheetId"].Returns("target Id");
+
             //// Act
             var target = new GoogleSheetUpdater(this._subServiceProvider);
             target.Update(coverageEntity, methodList);
 
             //// Assert
+            this._subConfiguration.Received()["Google.Sheet.SheetId"] = Arg.Any<string>();
         }
     }
 }
