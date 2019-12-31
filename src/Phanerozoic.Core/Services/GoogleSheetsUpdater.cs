@@ -31,6 +31,16 @@ namespace Phanerozoic.Core.Services
                     // Print columns A and E, which correspond to indices 0 and 4.
                     Console.WriteLine("{0}, {1}", row[0], row[4]);
                 }
+
+                var updateValues = new List<IList<object>>
+                {
+                    new List<object>
+                    {
+                        DateTime.Now
+                    }
+                };
+
+                this._googleSheetsService.SetValue(this._sheetsId, "A1", updateValues);
             }
             else
             {

@@ -15,7 +15,7 @@ namespace Phanerozoic.Core.Services
     {
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
-        private string[] _scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+        private string[] _scopes = { SheetsService.Scope.Spreadsheets };
 
         private string _applicationName = "Google Sheets API .NET Quickstart";
         private string _credentialsPath = "credentials.json";
@@ -64,8 +64,8 @@ namespace Phanerozoic.Core.Services
             var sheetsService = this.GetSheets(credential);
 
             // Define request parameters.
-            SpreadsheetsResource.ValuesResource.GetRequest request =
-                    sheetsService.Spreadsheets.Values.Get(spreadsheetId, range);
+            SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(spreadsheetId, range);
+            request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.FORMATTEDVALUE;
 
             // Prints the names and majors of students in a sample spreadsheet:
             ValueRange response = request.Execute();
@@ -73,20 +73,20 @@ namespace Phanerozoic.Core.Services
             return values;
         }
 
-        public void SetValue(string spreadsheetId, string range, string value)
+        public void SetValue(string spreadsheetId, string range, IList<IList<object>> values)
         {
             var credential = this.GetCredential(this._credentialsPath);
             var sheetsService = this.GetSheets(credential);
 
-            // How the input data should be interpreted.
-            SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum valueInputOption = (SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum)0;  // TODO: Update placeholder value.
-
             // TODO: Assign values to desired properties of `requestBody`. All existing
             // properties will be replaced:
-            Google.Apis.Sheets.v4.Data.ValueRange requestBody = new Google.Apis.Sheets.v4.Data.ValueRange();
+            Google.Apis.Sheets.v4.Data.ValueRange requestBody = new Google.Apis.Sheets.v4.Data.ValueRange
+            {
+                Values = values,
+            };
 
             SpreadsheetsResource.ValuesResource.UpdateRequest request = sheetsService.Spreadsheets.Values.Update(requestBody, spreadsheetId, range);
-            request.ValueInputOption = valueInputOption;
+            request.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
 
             // To execute asynchronously in an async method, replace `request.Execute()` as shown:
             Google.Apis.Sheets.v4.Data.UpdateValuesResponse response = request.Execute();

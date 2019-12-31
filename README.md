@@ -52,7 +52,7 @@ reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targ
 > [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)
 
 ## Update  
-#### Google Sheets
+#### Google Sheet
 > [Google Sheets API](https://developers.google.com/sheets/api/quickstart/dotnet)
 
 ## Notify  
