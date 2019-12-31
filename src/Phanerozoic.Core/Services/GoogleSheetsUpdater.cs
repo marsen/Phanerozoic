@@ -6,15 +6,15 @@ using System.Collections.Generic;
 
 namespace Phanerozoic.Core.Services
 {
-    public class GoogleSheetUpdater : ICoverageUpdater
+    public class GoogleSheetsUpdater : ICoverageUpdater
     {
         private readonly IConfiguration _configuration;
         private readonly IGoogleSheetsService _googleSheetsService;
         private string _sheetsId;
 
-        public GoogleSheetUpdater(IServiceProvider serviceProvider)
+        public GoogleSheetsUpdater(IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            this._configuration = serviceProvider.GetService<IConfiguration>();
+            this._configuration = configuration;
             this._googleSheetsService = serviceProvider.GetService<IGoogleSheetsService>();
 
             this._sheetsId = this._configuration["Google.Sheets.SheetsId"];

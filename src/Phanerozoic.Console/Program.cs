@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using Phanerozoic.Core.Services;
@@ -10,12 +11,11 @@ namespace Phanerozoic.Console
     {
         private static void Main(string[] args)
         {
+            // create service collection
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddScoped<ICoverageProcessor, CoverageProcessor>();
-            serviceCollection.AddScoped<IFileHelper, FileHelper>();
-            serviceCollection.AddScoped<IReportParser, DotCoverParser>();
-            serviceCollection.AddScoped<ICoverageUpdater, FileUpdater>();
+            ConfigureServices(serviceCollection);
 
+            // create service provider
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             var reportEntity = new ReportEntity
@@ -35,6 +35,21 @@ namespace Phanerozoic.Console
             coverageProcessor.Process(reportEntity, coverageEntity);
 
             serviceProvider.Dispose();
+        }
+
+        public static void ConfigureServices(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddScoped<ICoverageProcessor, CoverageProcessor>();
+            serviceCollection.AddScoped<IFileHelper, FileHelper>();
+            serviceCollection.AddScoped<IReportParser, DotCoverParser>();
+            serviceCollection.AddScoped<ICoverageUpdater, GoogleSheetsUpdater>();
+
+            var configurationRoot = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("AppSettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            serviceCollection.AddSingleton<IConfiguration>(configurationRoot);
         }
     }
 }

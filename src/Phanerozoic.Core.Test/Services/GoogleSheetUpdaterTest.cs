@@ -40,11 +40,11 @@ namespace Phanerozoic.Core.Test.Services
             this._subConfiguration["Google.Sheets.SheetsId"].Returns("target Id");
 
             //// Act
-            var target = new GoogleSheetUpdater(this._subServiceProvider);
+            var target = new GoogleSheetsUpdater(this._subServiceProvider, this._subConfiguration);
             target.Update(coverageEntity, methodList);
 
             //// Assert
-            this._subGoogleSheetsService.Received(1).GetValues(Arg.Any<string>(), Arg.Any<string>());
+            this._subGoogleSheetsService.Received(2).GetValues(Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }
