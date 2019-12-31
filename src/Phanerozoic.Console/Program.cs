@@ -43,6 +43,7 @@ namespace Phanerozoic.Console
             serviceCollection.AddScoped<IFileHelper, FileHelper>();
             serviceCollection.AddScoped<IReportParser, DotCoverParser>();
             serviceCollection.AddScoped<ICoverageUpdater, GoogleSheetsUpdater>();
+            serviceCollection.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
 
             var configurationRoot = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

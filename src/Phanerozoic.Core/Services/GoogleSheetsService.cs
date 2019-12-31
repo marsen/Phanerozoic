@@ -6,6 +6,7 @@ using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading;
 
 namespace Phanerozoic.Core.Services
@@ -18,6 +19,7 @@ namespace Phanerozoic.Core.Services
 
         private string _applicationName = "Google Sheets API .NET Quickstart";
         private string _credentialsPath = "credentials.json";
+        private UserCredential _userCredential;
 
         public GoogleSheetsService()
         {
@@ -25,24 +27,25 @@ namespace Phanerozoic.Core.Services
 
         private UserCredential GetCredential(string credentialsPath)
         {
-            UserCredential credential;
-
-            using (var stream =
-                new FileStream(credentialsPath, FileMode.Open, FileAccess.Read))
+            if (this._userCredential == null)
             {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    _scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
+                using (var stream =
+                    new FileStream(credentialsPath, FileMode.Open, FileAccess.Read))
+                {
+                    // The file token.json stores the user's access and refresh tokens, and is created
+                    // automatically when the authorization flow completes for the first time.
+                    string credPath = "token.json";
+                    this._userCredential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        _scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
             }
 
-            return credential;
+            return this._userCredential;
         }
 
         private SheetsService GetSheets(UserCredential credential)
@@ -58,18 +61,39 @@ namespace Phanerozoic.Core.Services
         public IList<IList<object>> GetValues(string spreadsheetId, string range)
         {
             var credential = this.GetCredential(this._credentialsPath);
-            var service = this.GetSheets(credential);
+            var sheetsService = this.GetSheets(credential);
 
             // Define request parameters.
-            //String spreadsheetId = this._configuration["Google.Sheet.SheetId"];
-            //String range = "Coverage!A2:I2";
             SpreadsheetsResource.ValuesResource.GetRequest request =
-                    service.Spreadsheets.Values.Get(spreadsheetId, range);
+                    sheetsService.Spreadsheets.Values.Get(spreadsheetId, range);
 
             // Prints the names and majors of students in a sample spreadsheet:
             ValueRange response = request.Execute();
             IList<IList<Object>> values = response.Values;
             return values;
+        }
+
+        public void SetValue(string spreadsheetId, string range, string value)
+        {
+            var credential = this.GetCredential(this._credentialsPath);
+            var sheetsService = this.GetSheets(credential);
+
+            // How the input data should be interpreted.
+            SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum valueInputOption = (SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum)0;  // TODO: Update placeholder value.
+
+            // TODO: Assign values to desired properties of `requestBody`. All existing
+            // properties will be replaced:
+            Google.Apis.Sheets.v4.Data.ValueRange requestBody = new Google.Apis.Sheets.v4.Data.ValueRange();
+
+            SpreadsheetsResource.ValuesResource.UpdateRequest request = sheetsService.Spreadsheets.Values.Update(requestBody, spreadsheetId, range);
+            request.ValueInputOption = valueInputOption;
+
+            // To execute asynchronously in an async method, replace `request.Execute()` as shown:
+            Google.Apis.Sheets.v4.Data.UpdateValuesResponse response = request.Execute();
+            // Data.UpdateValuesResponse response = await request.ExecuteAsync();
+
+            // TODO: Change code below to process the `response` object:
+            Console.WriteLine(JsonSerializer.Serialize(response));
         }
     }
 }

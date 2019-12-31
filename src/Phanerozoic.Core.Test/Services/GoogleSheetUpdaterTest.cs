@@ -44,7 +44,7 @@ namespace Phanerozoic.Core.Test.Services
             target.Update(coverageEntity, methodList);
 
             //// Assert
-            this._subGoogleSheetsService.Received(2).GetValues(Arg.Any<string>(), Arg.Any<string>());
+            this._subGoogleSheetsService.Received(1).GetValues(Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }
