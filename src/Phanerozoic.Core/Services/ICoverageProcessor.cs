@@ -4,6 +4,6 @@ namespace Phanerozoic.Core.Services
 {
     public interface ICoverageProcessor
     {
-        void Process(ReportEntity reportEntity);
+        void Process(ReportEntity reportEntity, CoverageEntity coverageEntity);
     }
 }

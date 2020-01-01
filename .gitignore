@@ -350,3 +350,7 @@ MigrationBackup/
 .ionide/
 lib/JetBrains.dotCover.CommandLineTools.2019.2.3
 extras/output
+/extras/CoverageReport_coverlet_DotNetFramework.ps1
+/extras/CoverageReport_dotCover_Batch.ps1
+/extras/CoverageReport_dotCover_WebStore.ps1
+/extras/dotCover.ps1

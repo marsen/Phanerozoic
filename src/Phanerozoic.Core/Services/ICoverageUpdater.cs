@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Phanerozoic.Core.Services
 {
-    public interface IReportParser
+    public interface ICoverageUpdater
     {
-        List<MethodEntity> Parser(ReportEntity reportEntity);
+        void Update(CoverageEntity coverageEntity, List<MethodEntity> methodList);
     }
 }

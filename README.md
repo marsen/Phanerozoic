@@ -1,9 +1,15 @@
 # Phanerozoic
-Parser, Update and Notify.
+Parse, Update and Notify.
 
 
 ## Naming
 > [顯生宙](https://zh.wikipedia.org/wiki/%E6%98%BE%E7%94%9F%E5%AE%99)  
+
+## Step
+1. Git Pull develop	取得程式碼
+2. MSBuild			建置
+3. dotCover			計算涵蓋率
+4. Phanerozoic		更新涵蓋率
 
 ## Coverage Tool
 ### dotcover
@@ -37,5 +43,17 @@ dotnet tool install -g dotnet-reportgenerator-globaltool
 # 執行
 reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targetdir:./output/report
 ```
-
 > [GitHub](https://github.com/danielpalme/ReportGenerator)  
+
+## Parse  
+涵蓋率格式
+- dotCover
+- opencover
+> [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)
+
+## Update  
+#### Google Sheet
+> [Google Sheets API](https://developers.google.com/sheets/api/quickstart/dotnet)
+
+## Notify  
+#### Slack  
