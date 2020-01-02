@@ -24,6 +24,9 @@ namespace Phanerozoic.Core.Services
             var result = new List<MethodEntity>();
             FindMethod(result, string.Empty, report.Children);
 
+            //// Method without argument
+            result.ForEach(i => i.Method = i.Method.Substring(0, i.Method.IndexOf('(')));
+
             return result;
         }
 

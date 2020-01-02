@@ -28,7 +28,8 @@ namespace Phanerozoic.Console
             fileName = fileName.Substring(0, fileName.LastIndexOf('.'));
             var coverageEntity = new CoverageEntity
             {
-                FilePath = Path.Combine(file.DirectoryName, $"{fileName}.csv")
+                FilePath = Path.Combine(file.DirectoryName, $"{fileName}.csv"),
+                Repository = args[1],
             };
 
             var coverageProcessor = serviceProvider.GetService<ICoverageProcessor>();

@@ -3,5 +3,7 @@
     public class CoverageEntity
     {
         public string FilePath { get; set; }
+
+        public string Repository { get; set; }
     }
 }

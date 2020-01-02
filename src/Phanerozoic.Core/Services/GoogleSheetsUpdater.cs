@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Phanerozoic.Core.Services
 {
@@ -22,30 +23,68 @@ namespace Phanerozoic.Core.Services
 
         public void Update(CoverageEntity coverageEntity, List<MethodEntity> methodList)
         {
-            IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, "Coverage!A2:I2");
+            var startIndex = 2;
+            List<MethodEntity> beforeMethodList = new List<MethodEntity>();
+            IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"Coverage!A{startIndex}:I100");
+
+            var index = startIndex;
             if (values != null && values.Count > 0)
             {
-                Console.WriteLine("Name, Major");
                 foreach (var row in values)
                 {
-                    // Print columns A and E, which correspond to indices 0 and 4.
-                    Console.WriteLine("{0}, {1}", row[0], row[4]);
+                    var methodEntity = new MethodEntity
+                    {
+                        Repository = row[0].ToString().Trim(),
+                        Project = row[1].ToString().Trim(),
+                        Class = row[2].ToString().Trim(),
+                        Method = row[3].ToString().Trim(),
+                        Coverage = int.Parse(row[4].ToString()),
+                        RawIndex = index,
+                        RawData = row,
+                    };
+                    beforeMethodList.Add(methodEntity);
+                }
+                index++;
+            }
+
+            var beforeProjectMethodList = beforeMethodList.Where(i => i.Repository == coverageEntity.Repository).ToList();
+
+            if (beforeProjectMethodList.Count <= 0)
+            {
+                Console.WriteLine($"專案 {coverageEntity.Repository}: 沒有對應的核心方法");
+                return;
+            }
+
+            foreach (var method in beforeProjectMethodList)
+            {
+                var newMethod = methodList.FirstOrDefault(i => i.Class == method.Class && i.Method == method.Method);
+
+                if (newMethod == null)
+                {
+                    continue;
                 }
 
-                var updateValues = new List<IList<object>>
+                method.UpdateCoverage(newMethod);
+
+                if (method.Status != CoverageStatus.Unchange)
+                {
+                    this.UpdateCell($"E{method.RawIndex}", method.Coverage);
+                    this.UpdateCell($"J{method.RawIndex}", DateTime.Now);
+                }
+            }
+        }
+
+        private void UpdateCell(string range, object value)
+        {
+            var updateValues = new List<IList<object>>
                 {
                     new List<object>
                     {
-                        DateTime.Now
+                        value
                     }
                 };
 
-                this._googleSheetsService.SetValue(this._sheetsId, "A1", updateValues);
-            }
-            else
-            {
-                Console.WriteLine("No data found.");
-            }
+            this._googleSheetsService.SetValue(this._sheetsId, range, updateValues);
         }
     }
 }

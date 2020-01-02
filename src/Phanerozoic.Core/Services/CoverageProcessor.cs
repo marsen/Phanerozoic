@@ -28,9 +28,12 @@ namespace Phanerozoic.Core.Services
             }
 
             Console.WriteLine($"Run {reportEntity.FilePath}");
+
             var methodList = this._reportParser.Parser(reportEntity);
 
             this._coverageUpdater.Update(coverageEntity, methodList);
+
+            //// Notify
         }
     }
 }
