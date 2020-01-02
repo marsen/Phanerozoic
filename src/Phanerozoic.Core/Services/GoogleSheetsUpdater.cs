@@ -23,15 +23,17 @@ namespace Phanerozoic.Core.Services
 
         public void Update(CoverageEntity coverageEntity, List<MethodEntity> methodList)
         {
-            var startIndex = 2;
+            var startIndex = 1;
+            var maxRow = 100;
             List<MethodEntity> beforeMethodList = new List<MethodEntity>();
-            IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"Coverage!A{startIndex}:I100");
+            IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"Coverage!A{startIndex + 1}:I{maxRow}");
 
             var index = startIndex;
             if (values != null && values.Count > 0)
             {
                 foreach (var row in values)
                 {
+                    index++;
                     var methodEntity = new MethodEntity
                     {
                         Repository = row[0].ToString().Trim(),
@@ -42,9 +44,12 @@ namespace Phanerozoic.Core.Services
                         RawIndex = index,
                         RawData = row,
                     };
-                    beforeMethodList.Add(methodEntity);
+
+                    if (string.IsNullOrWhiteSpace(methodEntity.Method) == false)
+                    {
+                        beforeMethodList.Add(methodEntity);
+                    }
                 }
-                index++;
             }
 
             var beforeProjectMethodList = beforeMethodList.Where(i => i.Repository == coverageEntity.Repository).ToList();

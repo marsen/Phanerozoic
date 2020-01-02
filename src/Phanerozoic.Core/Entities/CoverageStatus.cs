@@ -2,8 +2,8 @@
 {
     public enum CoverageStatus
     {
-        UP,
         Unchange,
+        UP,
         Down,
     }
 }
