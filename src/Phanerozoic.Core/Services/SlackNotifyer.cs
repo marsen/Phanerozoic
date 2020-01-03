@@ -2,6 +2,7 @@
 using Phanerozoic.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Phanerozoic.Core.Services
 {
@@ -15,7 +16,22 @@ namespace Phanerozoic.Core.Services
 
         public void Notify(List<MethodEntity> methodList)
         {
-            this._slackService.Send("");
+            var message = new StringBuilder();
+
+            foreach(var method in methodList)
+            {
+                if (method.Status == CoverageStatus.Down)
+                {
+                    message.AppendLine(method.ToString());
+                }
+            }
+
+            if (message.Length <= 0)
+            {
+                return;
+            }
+
+            this._slackService.Send(message.ToString());
         }
     }
 }

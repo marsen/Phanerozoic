@@ -31,7 +31,7 @@ namespace Phanerozoic.Core.Entities
             }
             else
             {
-                this.Status = CoverageStatus.UP;
+                this.Status = CoverageStatus.Up;
             }
             this.Coverage = method.Coverage;
         }
