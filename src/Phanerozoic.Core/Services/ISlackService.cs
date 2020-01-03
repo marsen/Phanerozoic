@@ -1,7 +1,9 @@
-﻿namespace Phanerozoic.Core.Services
+﻿using System.Threading.Tasks;
+
+namespace Phanerozoic.Core.Services
 {
     public interface ISlackService
     {
-        void Send(string empty);
+        Task SendAsync(string webHookUrl, string message);
     }
 }

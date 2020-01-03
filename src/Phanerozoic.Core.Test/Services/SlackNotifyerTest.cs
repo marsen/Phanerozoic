@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Services;
@@ -12,14 +13,17 @@ namespace Phanerozoic.Core.Test.Services
     public class SlackNotifyerTest
     {
         private readonly ISlackService _stubSlackService;
+        private readonly IConfiguration _stubConfiguration;
         private readonly IServiceProvider _stubServiceProvider;
 
         public SlackNotifyerTest()
         {
             this._stubSlackService = Substitute.For<ISlackService>();
+            this._stubConfiguration = Substitute.For<IConfiguration>();
 
             this._stubServiceProvider = Substitute.For<IServiceProvider>();
             this._stubServiceProvider.GetService<ISlackService>().Returns(this._stubSlackService);
+            this._stubServiceProvider.GetService<IConfiguration>().Returns(this._stubConfiguration);
         }
 
         [Fact]
@@ -55,7 +59,7 @@ namespace Phanerozoic.Core.Test.Services
             target.Notify(methodList);
 
             //// Assert
-            this._stubSlackService.DidNotReceiveWithAnyArgs().Send(Arg.Any<string>());
+            this._stubSlackService.DidNotReceiveWithAnyArgs().SendAsync(string.Empty, Arg.Any<string>());
         }
 
         [Fact]
@@ -78,12 +82,15 @@ namespace Phanerozoic.Core.Test.Services
             stringBuilder.AppendLine(method.ToString());
             var expectedMessage = stringBuilder.ToString();
 
+            var webHookUrl = "http://abc.com";
+            this._stubConfiguration["Slack.WebHookUrl"].Returns(webHookUrl);
+
             //// Act
             var target = GetTarget();
             target.Notify(methodList);
 
             //// Assert
-            this._stubSlackService.Received(1).Send(expectedMessage);
+            this._stubSlackService.Received(1).SendAsync(webHookUrl, expectedMessage);
         }
 
         private SlackNotifyer GetTarget()
