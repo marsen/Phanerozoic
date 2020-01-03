@@ -49,6 +49,7 @@ namespace Phanerozoic.Console
             var configurationRoot = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("AppSettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("AppSettings.json.user", true, true)
                 .Build();
 
             serviceCollection.AddSingleton<IConfiguration>(configurationRoot);
