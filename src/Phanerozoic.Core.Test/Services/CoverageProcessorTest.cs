@@ -13,28 +13,28 @@ namespace Phanerozoic.Core.Test.Services
 {
     public class CoverageProcessorTest
     {
-        private readonly IServiceProvider _subServiceProvider;
-        private readonly IFileHelper _subFileHelper;
-        private readonly IReportParser _subReportParser;
-        private readonly ICoverageUpdater _subCoverageUpdater;
+        private readonly IServiceProvider _stubServiceProvider;
+        private readonly IFileHelper _stubFileHelper;
+        private readonly IReportParser _stubReportParser;
+        private readonly ICoverageUpdater _stubCoverageUpdater;
 
         public CoverageProcessorTest()
         {
-            this._subFileHelper = Substitute.For<IFileHelper>();
-            this._subReportParser = Substitute.For<IReportParser>();
-            this._subCoverageUpdater = Substitute.For<ICoverageUpdater>();
+            this._stubFileHelper = Substitute.For<IFileHelper>();
+            this._stubReportParser = Substitute.For<IReportParser>();
+            this._stubCoverageUpdater = Substitute.For<ICoverageUpdater>();
 
-            this._subServiceProvider = Substitute.For<IServiceProvider>();
-            this._subServiceProvider.GetService<IFileHelper>().Returns(this._subFileHelper);
-            this._subServiceProvider.GetService<IReportParser>().Returns(this._subReportParser);
-            this._subServiceProvider.GetService<ICoverageUpdater>().Returns(this._subCoverageUpdater);
+            this._stubServiceProvider = Substitute.For<IServiceProvider>();
+            this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
+            this._stubServiceProvider.GetService<IReportParser>().Returns(this._stubReportParser);
+            this._stubServiceProvider.GetService<ICoverageUpdater>().Returns(this._stubCoverageUpdater);
         }
 
         [Fact(DisplayName = "Happy Path")]
         public void Test_Process_Flow()
         {
             //// arrange
-            this._subFileHelper.Exists(Arg.Any<string>()).Returns(true);
+            this._stubFileHelper.Exists(Arg.Any<string>()).Returns(true);
             var reportEntity = new ReportEntity
             {
                 FilePath = "report.json"
@@ -50,15 +50,15 @@ namespace Phanerozoic.Core.Test.Services
             target.Process(reportEntity, coverageEntity);
 
             //// assert
-            this._subReportParser.Received(1).Parser(Arg.Any<ReportEntity>());
-            this._subCoverageUpdater.Received(1).Update(Arg.Any<CoverageEntity>(), Arg.Any<List<MethodEntity>>());
+            this._stubReportParser.Received(1).Parser(Arg.Any<ReportEntity>());
+            this._stubCoverageUpdater.Received(1).Update(Arg.Any<CoverageEntity>(), Arg.Any<List<MethodEntity>>());
         }
 
         [Fact(DisplayName = "檔案不存在")]
         public void Test_Process_Flow_FileNotFound()
         {
             //// arrange
-            this._subFileHelper.Exists(Arg.Any<string>()).Returns(false);
+            this._stubFileHelper.Exists(Arg.Any<string>()).Returns(false);
             var reportEntity = new ReportEntity
             {
                 FilePath = "report.json"
@@ -81,7 +81,7 @@ namespace Phanerozoic.Core.Test.Services
 
         private CoverageProcessor GetTarget()
         {
-            return new CoverageProcessor(this._subServiceProvider);
+            return new CoverageProcessor(this._stubServiceProvider);
         }
     }
 }
