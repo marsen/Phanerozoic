@@ -17,17 +17,20 @@ namespace Phanerozoic.Core.Test.Services
         private readonly IFileHelper _stubFileHelper;
         private readonly IReportParser _stubReportParser;
         private readonly ICoverageUpdater _stubCoverageUpdater;
+        private readonly INotifyer _stubNotifyer;
 
         public CoverageProcessorTest()
         {
             this._stubFileHelper = Substitute.For<IFileHelper>();
             this._stubReportParser = Substitute.For<IReportParser>();
             this._stubCoverageUpdater = Substitute.For<ICoverageUpdater>();
+            this._stubNotifyer = Substitute.For<INotifyer>();
 
             this._stubServiceProvider = Substitute.For<IServiceProvider>();
             this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
             this._stubServiceProvider.GetService<IReportParser>().Returns(this._stubReportParser);
             this._stubServiceProvider.GetService<ICoverageUpdater>().Returns(this._stubCoverageUpdater);
+            this._stubServiceProvider.GetService<INotifyer>().Returns(this._stubNotifyer);
         }
 
         [Fact(DisplayName = "Happy Path")]
@@ -51,7 +54,8 @@ namespace Phanerozoic.Core.Test.Services
 
             //// assert
             this._stubReportParser.Received(1).Parser(Arg.Any<ReportEntity>());
-            this._stubCoverageUpdater.Received(1).Update(Arg.Any<CoverageEntity>(), Arg.Any<List<MethodEntity>>());
+            this._stubCoverageUpdater.Received(1).Update(Arg.Any<CoverageEntity>(), Arg.Any<IList<MethodEntity>>());
+            this._stubNotifyer.Received(1).Notify(Arg.Any<IList<MethodEntity>>());
         }
 
         [Fact(DisplayName = "檔案不存在")]

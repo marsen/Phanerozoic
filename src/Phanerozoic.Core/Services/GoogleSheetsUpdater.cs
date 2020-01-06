@@ -21,7 +21,7 @@ namespace Phanerozoic.Core.Services
             this._sheetsId = this._configuration["Google.Sheets.SheetsId"];
         }
 
-        public void Update(CoverageEntity coverageEntity, List<MethodEntity> methodList)
+        public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
             var startIndex = 1;
             var maxRow = 100;
@@ -57,7 +57,7 @@ namespace Phanerozoic.Core.Services
             if (beforeProjectMethodList.Count <= 0)
             {
                 Console.WriteLine($"專案 {coverageEntity.Repository}: 沒有對應的核心方法");
-                return;
+                return beforeProjectMethodList;
             }
 
             foreach (var method in beforeProjectMethodList)
@@ -77,6 +77,8 @@ namespace Phanerozoic.Core.Services
                     this.UpdateCell($"J{method.RawIndex}", DateTime.Now);
                 }
             }
+
+            return beforeProjectMethodList;
         }
 
         private void UpdateCell(string range, object value)

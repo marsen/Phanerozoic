@@ -17,7 +17,7 @@ namespace Phanerozoic.Core.Services
             this._fileHelper = serviceProvider.GetService<IFileHelper>();
         }
 
-        public void Update(CoverageEntity coverageEntity, List<MethodEntity> methodList)
+        public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
             var stringBuilder = new StringBuilder();
 
@@ -35,6 +35,8 @@ namespace Phanerozoic.Core.Services
             string contents = stringBuilder.ToString();
 
             this._fileHelper.WriteAllText(coverageEntity.FilePath, contents);
+
+            return methodList;
         }
     }
 }

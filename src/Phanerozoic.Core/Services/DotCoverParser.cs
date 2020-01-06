@@ -16,7 +16,7 @@ namespace Phanerozoic.Core.Services
             this._fileHelper = serviceProvider.GetRequiredService<IFileHelper>();
         }
 
-        public List<MethodEntity> Parser(ReportEntity reportEntity)
+        public IList<MethodEntity> Parser(ReportEntity reportEntity)
         {
             var json = this._fileHelper.ReadAllText(reportEntity.FilePath);
             var report = JsonSerializer.Deserialize<DotCoverReport>(json);

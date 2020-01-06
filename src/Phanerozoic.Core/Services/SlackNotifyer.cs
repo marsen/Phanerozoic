@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Phanerozoic.Core.Services
 {
-    public class SlackNotifyer
+    public class SlackNotifyer : INotifyer
     {
         private readonly ISlackService _slackService;
         private readonly IConfiguration _configuration;
@@ -18,7 +18,7 @@ namespace Phanerozoic.Core.Services
             this._configuration = serviceProvider.GetService<IConfiguration>();
         }
 
-        public void Notify(List<MethodEntity> methodList)
+        public void Notify(IList<MethodEntity> methodList)
         {
             var message = new StringBuilder();
 
