@@ -26,7 +26,7 @@ namespace Phanerozoic.Core.Services
             var request = new HttpRequestMessage(HttpMethod.Post, webHookUrl);
             request.Content = content;
 
-            var response = await httpClient.SendAsync(request);
+            var response = httpClient.SendAsync(request).Result;
 
             Console.WriteLine(response.StatusCode.ToString());
         }

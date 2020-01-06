@@ -74,7 +74,7 @@ namespace Phanerozoic.Core.Services
                 if (method.Status != CoverageStatus.Unchange)
                 {
                     this.UpdateCell($"E{method.RawIndex}", method.Coverage);
-                    this.UpdateCell($"J{method.RawIndex}", DateTime.Now);
+                    this.UpdateCell($"J{method.RawIndex}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
             }
 

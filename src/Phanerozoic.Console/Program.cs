@@ -45,6 +45,9 @@ namespace Phanerozoic.Console
             serviceCollection.AddScoped<IReportParser, DotCoverParser>();
             serviceCollection.AddScoped<ICoverageUpdater, GoogleSheetsUpdater>();
             serviceCollection.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
+            serviceCollection.AddScoped<INotifyer, SlackNotifyer>();
+            serviceCollection.AddScoped<ISlackService, SlackService>();
+            serviceCollection.AddHttpClient(); 
 
             var configurationRoot = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
