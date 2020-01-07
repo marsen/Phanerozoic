@@ -21,11 +21,11 @@ namespace Phanerozoic.Core.Services
             this._sheetsId = this._configuration["Google.Sheets.SheetsId"];
         }
 
-        public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
+        public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> reportMethodList)
         {
             var startIndex = 1;
             var maxRow = 100;
-            List<MethodEntity> beforeMethodList = new List<MethodEntity>();
+            List<MethodEntity> sheetMethodList = new List<MethodEntity>();
             IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"Coverage!A{startIndex + 1}:I{maxRow}");
 
             var index = startIndex;
@@ -47,38 +47,38 @@ namespace Phanerozoic.Core.Services
 
                     if (string.IsNullOrWhiteSpace(methodEntity.Method) == false)
                     {
-                        beforeMethodList.Add(methodEntity);
+                        sheetMethodList.Add(methodEntity);
                     }
                 }
             }
 
-            var beforeProjectMethodList = beforeMethodList.Where(i => i.Repository == coverageEntity.Repository).ToList();
+            var repositoryMethodList = sheetMethodList.Where(i => i.Repository == coverageEntity.Repository).ToList();
 
-            if (beforeProjectMethodList.Count <= 0)
+            if (repositoryMethodList.Count <= 0)
             {
                 Console.WriteLine($"專案 {coverageEntity.Repository}: 沒有對應的核心方法");
-                return beforeProjectMethodList;
+                return repositoryMethodList;
             }
 
-            foreach (var method in beforeProjectMethodList)
+            foreach (var coreMethod in repositoryMethodList)
             {
-                var newMethod = methodList.FirstOrDefault(i => i.Class == method.Class && i.Method == method.Method);
+                var reportMethod = reportMethodList.FirstOrDefault(i => i.Class == coreMethod.Class && i.Method == coreMethod.Method);
 
-                if (newMethod == null)
+                if (reportMethod == null)
                 {
                     continue;
                 }
 
-                method.UpdateCoverage(newMethod);
+                coreMethod.UpdateCoverage(reportMethod);
 
-                if (method.Status != CoverageStatus.Unchange)
+                if (coreMethod.Status != CoverageStatus.Unchange)
                 {
-                    this.UpdateCell($"E{method.RawIndex}", method.Coverage);
-                    this.UpdateCell($"J{method.RawIndex}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    this.UpdateCell($"E{coreMethod.RawIndex}", coreMethod.Coverage);
+                    this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
             }
 
-            return beforeProjectMethodList;
+            return repositoryMethodList;
         }
 
         private void UpdateCell(string range, object value)
