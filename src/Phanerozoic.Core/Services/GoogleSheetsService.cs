@@ -20,12 +20,13 @@ namespace Phanerozoic.Core.Services
         private string _applicationName = "Google Sheets API .NET Quickstart";
         private string _credentialsPath = "credentials.json";
         private UserCredential _userCredential;
+        private ServiceAccountCredential _serviceAccountCredential;
 
         public GoogleSheetsService()
         {
         }
 
-        private UserCredential GetCredential(string credentialsPath)
+        private ICredential GetCredential(string credentialsPath)
         {
             if (this._userCredential == null)
             {
@@ -38,7 +39,7 @@ namespace Phanerozoic.Core.Services
                     this._userCredential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                         GoogleClientSecrets.Load(stream).Secrets,
                         _scopes,
-                        "user",
+                        "Phanerozoic",
                         CancellationToken.None,
                         new FileDataStore(credPath, true)).Result;
                     Console.WriteLine("Credential file saved to: " + credPath);
@@ -48,7 +49,13 @@ namespace Phanerozoic.Core.Services
             return this._userCredential;
         }
 
-        private SheetsService GetSheets(UserCredential credential)
+        private ICredential GetServiceCredential(string credentialsPath)
+        {
+            var googleCredential = GoogleCredential.FromFile(credentialsPath).CreateScoped(this._scopes);
+            return googleCredential;
+        }
+
+        private SheetsService GetSheets(ICredential credential)
         {
             // Create Google Sheets API service.
             return new SheetsService(new BaseClientService.Initializer()
@@ -60,7 +67,7 @@ namespace Phanerozoic.Core.Services
 
         public IList<IList<object>> GetValues(string spreadsheetId, string range)
         {
-            var credential = this.GetCredential(this._credentialsPath);
+            var credential = this.GetServiceCredential(this._credentialsPath);
             var sheetsService = this.GetSheets(credential);
 
             // Define request parameters.
@@ -75,7 +82,7 @@ namespace Phanerozoic.Core.Services
 
         public void SetValue(string spreadsheetId, string range, IList<IList<object>> values)
         {
-            var credential = this.GetCredential(this._credentialsPath);
+            var credential = this.GetServiceCredential(this._credentialsPath);
             var sheetsService = this.GetSheets(credential);
 
             // TODO: Assign values to desired properties of `requestBody`. All existing
