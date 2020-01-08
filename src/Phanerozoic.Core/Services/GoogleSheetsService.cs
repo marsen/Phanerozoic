@@ -3,6 +3,9 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Phanerozoic.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,16 +20,33 @@ namespace Phanerozoic.Core.Services
         // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
         private string[] _scopes = { SheetsService.Scope.Spreadsheets };
 
-        private string _applicationName = "Google Sheets API .NET Quickstart";
+        private string _applicationName = "Phanerozoic.Core Library";
+        private GoogleCredentialType _credentialType;
         private string _credentialsPath = "credentials.json";
         private UserCredential _userCredential;
-        private ServiceAccountCredential _serviceAccountCredential;
+        private GoogleCredential _serviceAccountCredential;
 
-        public GoogleSheetsService()
+        public GoogleSheetsService(IServiceProvider serviceProvider)
         {
+            IConfiguration configuration = serviceProvider.GetService<IConfiguration>();
+
+            this._credentialType = Enum.Parse<GoogleCredentialType>(configuration["Google:Credential:Type"]);
+            this._credentialsPath = configuration["Google:Credential:File"];
         }
 
-        private ICredential GetCredential(string credentialsPath)
+        private ICredential GetCredential(string credentialsPaht)
+        {
+            if (this._credentialType == GoogleCredentialType.User)
+            {
+                return GetUserCredential(credentialsPaht);
+            }
+            else
+            {
+                return GetServiceCredential(credentialsPaht);
+            }
+        }
+
+        private ICredential GetUserCredential(string credentialsPath)
         {
             if (this._userCredential == null)
             {
@@ -51,8 +71,11 @@ namespace Phanerozoic.Core.Services
 
         private ICredential GetServiceCredential(string credentialsPath)
         {
-            var googleCredential = GoogleCredential.FromFile(credentialsPath).CreateScoped(this._scopes);
-            return googleCredential;
+            if (this._serviceAccountCredential == null)
+            {
+                this._serviceAccountCredential = GoogleCredential.FromFile(credentialsPath).CreateScoped(this._scopes);
+            }
+            return this._serviceAccountCredential;
         }
 
         private SheetsService GetSheets(ICredential credential)
@@ -67,7 +90,7 @@ namespace Phanerozoic.Core.Services
 
         public IList<IList<object>> GetValues(string spreadsheetId, string range)
         {
-            var credential = this.GetServiceCredential(this._credentialsPath);
+            var credential = this.GetCredential(this._credentialsPath);
             var sheetsService = this.GetSheets(credential);
 
             // Define request parameters.
@@ -82,7 +105,7 @@ namespace Phanerozoic.Core.Services
 
         public void SetValue(string spreadsheetId, string range, IList<IList<object>> values)
         {
-            var credential = this.GetServiceCredential(this._credentialsPath);
+            var credential = this.GetCredential(this._credentialsPath);
             var sheetsService = this.GetSheets(credential);
 
             // TODO: Assign values to desired properties of `requestBody`. All existing

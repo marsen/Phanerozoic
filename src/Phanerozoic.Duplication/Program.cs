@@ -39,8 +39,8 @@ namespace Phanerozoic.Duplication
             var configuration = serviceProvider.GetService<IConfiguration>();
             var googleSheetsService = serviceProvider.GetService<IGoogleSheetsService>();
 
-            var sourceId = configuration["Source:Google.Sheets.SheetsId"];
-            var targetId = configuration["Target:Google.Sheets.SheetsId"];
+            var sourceId = configuration["Google:Sheets:SourceId"];
+            var targetId = configuration["Google:Sheets:TargetId"];
 
             //// Read
             var sourceList = googleSheetsService.GetValues(sourceId, "Coverage!A2:F100");
