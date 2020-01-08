@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Phanerozoic.Core.Services
             this._configuration = configuration;
             this._googleSheetsService = serviceProvider.GetService<IGoogleSheetsService>();
 
-            this._sheetsId = this._configuration["Google.Sheets.SheetsId"];
+            this._sheetsId = this._configuration["Google:Sheets:Id"];
         }
 
         public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> reportMethodList)
@@ -74,7 +75,7 @@ namespace Phanerozoic.Core.Services
                 if (coreMethod.Status != CoverageStatus.Unchange)
                 {
                     this.UpdateCell($"E{coreMethod.RawIndex}", coreMethod.Coverage);
-                    this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString(DateTimeHelper.Format));
                 }
             }
 
