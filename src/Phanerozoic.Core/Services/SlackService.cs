@@ -2,7 +2,6 @@
 using System;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Phanerozoic.Core.Services
@@ -16,12 +15,11 @@ namespace Phanerozoic.Core.Services
             this._httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
         }
 
-        public async Task SendAsync(string webHookUrl, string message)
+        public async Task SendAsync(string webHookUrl, string slackMessageJson)
         {
             var httpClient = this._httpClientFactory.CreateClient();
-            var data = new { text = message };
 
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var content = new StringContent(slackMessageJson, Encoding.UTF8, "application/json");
 
             var request = new HttpRequestMessage(HttpMethod.Post, webHookUrl);
             request.Content = content;

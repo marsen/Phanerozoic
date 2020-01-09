@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace Phanerozoic.Core.Services
 {
@@ -25,28 +26,71 @@ namespace Phanerozoic.Core.Services
 
         public void Notify(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
-            var message = new StringBuilder();
-            message.AppendLine($"Phanerozoic Notify @{DateTime.Now.ToString(DateTimeHelper.Format)}");
+            var slackMessageJson = this.GetSlackMessage(coverageEntity, methodList);
+
+            if (slackMessageJson.Length <= 0)
+            {
+                return;
+            }
+
+            this._slackService.SendAsync(this._webHookUrl, slackMessageJson);
+        }
+
+        private string GetMessage(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"Phanerozoic Notify @{DateTime.Now.ToString(DateTimeHelper.Format)}");
 
             var downCount = methodList.Count(i => i.Status == CoverageStatus.Down);
 
-            message.AppendLine($"> Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}");
+            stringBuilder.AppendLine($"> Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}");
 
             foreach (var method in methodList)
             {
                 if (method.Status == CoverageStatus.Down)
                 {
                     var msg = $"{method.Class}.{method.Method}: {method.LastCoverage} → {method.Coverage}";
-                    message.AppendLine(msg);
+                    stringBuilder.AppendLine(msg);
                 }
             }
 
-            if (message.Length <= 0)
-            {
-                return;
-            }
+            var data = new { text = stringBuilder.ToString() };
+            var json = JsonSerializer.Serialize(data);
 
-            this._slackService.SendAsync(this._webHookUrl, message.ToString());
+            return json;
+        }
+
+        private string GetSlackMessage(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
+        {
+            var attachment = new Attachment
+            {
+                Color = "#FF0000"
+            };
+
+            attachment.Pretext = $"Phanerozoic Notify @{DateTime.Now.ToString(DateTimeHelper.Format)}";
+
+            var downCount = methodList.Count(i => i.Status == CoverageStatus.Down);
+            attachment.Title = $"Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}";
+
+            var stringBuilder = new StringBuilder();
+            foreach (var method in methodList)
+            {
+                if (method.Status == CoverageStatus.Down)
+                {
+                    var msg = $"{method.Class}.{method.Method}: {method.LastCoverage} → {method.Coverage}";
+                    stringBuilder.AppendLine(msg);
+                }
+            }
+            attachment.Text = stringBuilder.ToString();
+
+            var slackMessage = new SlackMessage
+            {
+                Attachments = new List<Attachment>{
+                    attachment
+                }
+            };
+
+            return slackMessage.ToJson();
         }
     }
 }
