@@ -62,14 +62,15 @@ namespace Phanerozoic.Core.Services
 
         private string GetSlackMessage(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
+            var downCount = methodList.Count(i => i.Status == CoverageStatus.Down);
+            var color = downCount > 0 ? "#FF0000" : "#00FF00";
             var attachment = new Attachment
             {
-                Color = "#FF0000"
+                Color = color
             };
 
             attachment.Pretext = $"Phanerozoic Notify @{DateTime.Now.ToString(DateTimeHelper.Format)}";
 
-            var downCount = methodList.Count(i => i.Status == CoverageStatus.Down);
             attachment.Title = $"Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}";
 
             var stringBuilder = new StringBuilder();
