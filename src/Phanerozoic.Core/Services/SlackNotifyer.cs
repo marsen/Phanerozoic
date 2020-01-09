@@ -36,7 +36,8 @@ namespace Phanerozoic.Core.Services
             {
                 if (method.Status == CoverageStatus.Down)
                 {
-                    message.AppendLine(method.ToString());
+                    var msg = $"{method.Class}.{method.Method}: {method.LastCoverage} → {method.Coverage}";
+                    message.AppendLine(msg);
                 }
             }
 
