@@ -4,6 +4,7 @@ using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Phanerozoic.Core.Services
@@ -22,10 +23,14 @@ namespace Phanerozoic.Core.Services
             this._webHookUrl = configuration["Slack:WebHookUrl"];
         }
 
-        public void Notify(IList<MethodEntity> methodList)
+        public void Notify(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
             var message = new StringBuilder();
             message.AppendLine($"Phanerozoic Notify @{DateTime.Now.ToString(DateTimeHelper.Format)}");
+
+            var downCount = methodList.Count(i => i.Status == CoverageStatus.Down);
+
+            message.AppendLine($"> Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}");
 
             foreach (var method in methodList)
             {

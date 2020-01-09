@@ -9,8 +9,8 @@ namespace Phanerozoic.Core.Entities
         public string Class { get; set; }
         public string Method { get; set; }
         public int Coverage { get; set; }
-
         public CoverageStatus Status { get; set; }
+        public int? LastCoverage { get; private set; }
         public int RawIndex { get; set; }
         public IList<object> RawData { get; set; }
 
@@ -33,6 +33,7 @@ namespace Phanerozoic.Core.Entities
             {
                 this.Status = CoverageStatus.Up;
             }
+            this.LastCoverage = this.Coverage;
             this.Coverage = method.Coverage;
         }
     }

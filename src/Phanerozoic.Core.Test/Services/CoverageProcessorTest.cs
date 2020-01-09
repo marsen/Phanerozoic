@@ -55,7 +55,7 @@ namespace Phanerozoic.Core.Test.Services
             //// assert
             this._stubReportParser.Received(1).Parser(Arg.Any<ReportEntity>());
             this._stubCoverageUpdater.Received(1).Update(Arg.Any<CoverageEntity>(), Arg.Any<IList<MethodEntity>>());
-            this._stubNotifyer.Received(1).Notify(Arg.Any<IList<MethodEntity>>());
+            this._stubNotifyer.Received(1).Notify(Arg.Any<CoverageEntity>(), Arg.Any<IList<MethodEntity>>());
         }
 
         [Fact(DisplayName = "檔案不存在")]
