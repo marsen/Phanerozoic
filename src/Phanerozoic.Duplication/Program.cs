@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Services;
+using System;
 using System.IO;
 
 namespace Phanerozoic.Duplication
@@ -41,6 +42,9 @@ namespace Phanerozoic.Duplication
 
             var sourceId = configuration["Google:Sheets:SourceId"];
             var targetId = configuration["Google:Sheets:TargetId"];
+
+            Console.WriteLine($"Source Sheets ID: {sourceId}");
+            Console.WriteLine($"Target Sheets ID: {targetId}");
 
             //// Read
             var sourceList = googleSheetsService.GetValues(sourceId, "Coverage!A2:F100");

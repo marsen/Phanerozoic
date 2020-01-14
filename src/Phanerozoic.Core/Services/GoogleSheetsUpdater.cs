@@ -20,6 +20,8 @@ namespace Phanerozoic.Core.Services
             this._googleSheetsService = serviceProvider.GetService<IGoogleSheetsService>();
 
             this._sheetsId = this._configuration["Google:Sheets:Id"];
+
+            Console.WriteLine($"Target Sheets ID: {this._sheetsId}");
         }
 
         public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> reportMethodList)
@@ -78,10 +80,10 @@ namespace Phanerozoic.Core.Services
                 if (coreMethod.Status != CoverageStatus.Unchange)
                 {
                     this.UpdateCell($"E{coreMethod.RawIndex}", coreMethod.Coverage);
-                    this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString(DateTimeHelper.Format));
                 }
+                this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString(DateTimeHelper.Format));
             }
-            Console.WriteLine($"涵蓋率更新: {updateCount}/{reportMethodList.Count}");
+            Console.WriteLine($"涵蓋率更新: {updateCount}/{repositoryMethodList.Count}");
 
             return repositoryMethodList;
         }

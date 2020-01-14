@@ -124,7 +124,7 @@ namespace Phanerozoic.Core.Services
             // Data.UpdateValuesResponse response = await request.ExecuteAsync();
 
             // TODO: Change code below to process the `response` object:
-            Console.WriteLine(JsonSerializer.Serialize(response));
+            //Console.WriteLine(JsonSerializer.Serialize(response));
         }
     }
 }
