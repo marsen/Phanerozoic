@@ -36,6 +36,7 @@ namespace Phanerozoic.Core.Services
 
         private ICredential GetCredential(string credentialsPaht)
         {
+            Console.WriteLine($"使用的 Google API 授權類型: {this._credentialType.ToString()}");
             if (this._credentialType == GoogleCredentialType.User)
             {
                 return GetUserCredential(credentialsPaht);

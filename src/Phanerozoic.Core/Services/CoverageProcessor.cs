@@ -25,11 +25,9 @@ namespace Phanerozoic.Core.Services
         {
             if (this._fileHelper.Exists(reportEntity.FilePath) == false)
             {
-                Console.WriteLine("Not Found");
+                Console.WriteLine($"File Not Found: {reportEntity.FilePath}");
                 throw new FileNotFoundException("File Not Found!", reportEntity.FilePath);
             }
-
-            Console.WriteLine($"Run {reportEntity.FilePath}");
 
             //// Parser
             var methodList = this._reportParser.Parser(reportEntity);
