@@ -77,6 +77,14 @@ namespace Phanerozoic.Core.Services
 
                 coreMethod.UpdateCoverage(reportMethod);
 
+                var symbolDictionary = new Dictionary<CoverageStatus, string>();
+                symbolDictionary.Add(CoverageStatus.Unchange, "=");
+                symbolDictionary.Add(CoverageStatus.Up, "▲");
+                symbolDictionary.Add(CoverageStatus.Down, "▼");
+                var symbol = symbolDictionary[coreMethod.Status];
+
+                Console.WriteLine($"{coreMethod.Class}.{coreMethod.Method}: {coreMethod.LastCoverage} {symbol} {coreMethod.Coverage}");
+
                 if (coreMethod.Status != CoverageStatus.Unchange)
                 {
                     this.UpdateCell($"E{coreMethod.RawIndex}", coreMethod.Coverage);

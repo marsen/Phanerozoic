@@ -9,7 +9,6 @@ using Phanerozoic.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Threading;
 
 namespace Phanerozoic.Core.Services
@@ -32,11 +31,12 @@ namespace Phanerozoic.Core.Services
 
             this._credentialType = Enum.Parse<GoogleCredentialType>(configuration["Google:Credential:Type"]);
             this._credentialsPath = configuration["Google:Credential:File"];
+
+            Console.WriteLine($"使用的 Google API 授權類型: {this._credentialType.ToString()}");
         }
 
         private ICredential GetCredential(string credentialsPaht)
         {
-            Console.WriteLine($"使用的 Google API 授權類型: {this._credentialType.ToString()}");
             if (this._credentialType == GoogleCredentialType.User)
             {
                 return GetUserCredential(credentialsPaht);
