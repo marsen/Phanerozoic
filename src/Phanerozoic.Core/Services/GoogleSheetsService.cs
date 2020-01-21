@@ -96,7 +96,7 @@ namespace Phanerozoic.Core.Services
 
             // Define request parameters.
             SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(spreadsheetId, range);
-            request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.FORMATTEDVALUE;
+            request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.FORMULA;
 
             // Prints the names and majors of students in a sample spreadsheet:
             ValueRange response = request.Execute();
@@ -117,7 +117,7 @@ namespace Phanerozoic.Core.Services
             };
 
             SpreadsheetsResource.ValuesResource.UpdateRequest request = sheetsService.Spreadsheets.Values.Update(requestBody, spreadsheetId, range);
-            request.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+            request.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
             // To execute asynchronously in an async method, replace `request.Execute()` as shown:
             Google.Apis.Sheets.v4.Data.UpdateValuesResponse response = request.Execute();

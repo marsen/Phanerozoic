@@ -13,6 +13,7 @@ namespace Phanerozoic.Core.Entities
         public int? LastCoverage { get; private set; }
         public int RawIndex { get; set; }
         public IList<object> RawData { get; set; }
+        public string Team { get; set; }
 
         public override string ToString()
         {
