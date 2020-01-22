@@ -35,9 +35,9 @@ namespace Phanerozoic.Core.Services
             Console.WriteLine($"使用的 Google API 授權類型: {this._credentialType.ToString()}");
         }
 
-        private ICredential GetCredential(string credentialsPaht)
+        private ICredential GetCredential(GoogleCredentialType credentialType, string credentialsPaht)
         {
-            if (this._credentialType == GoogleCredentialType.User)
+            if (credentialType == GoogleCredentialType.User)
             {
                 return GetUserCredential(credentialsPaht);
             }
@@ -91,8 +91,7 @@ namespace Phanerozoic.Core.Services
 
         public IList<IList<object>> GetValues(string spreadsheetId, string range)
         {
-            var credential = this.GetCredential(this._credentialsPath);
-            var sheetsService = this.GetSheets(credential);
+            var sheetsService = GetSheetsService();
 
             // Define request parameters.
             SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(spreadsheetId, range);
@@ -106,8 +105,7 @@ namespace Phanerozoic.Core.Services
 
         public void SetValue(string spreadsheetId, string range, IList<IList<object>> values)
         {
-            var credential = this.GetCredential(this._credentialsPath);
-            var sheetsService = this.GetSheets(credential);
+            var sheetsService = GetSheetsService();
 
             // TODO: Assign values to desired properties of `requestBody`. All existing
             // properties will be replaced:
@@ -125,6 +123,12 @@ namespace Phanerozoic.Core.Services
 
             // TODO: Change code below to process the `response` object:
             //Console.WriteLine(JsonSerializer.Serialize(response));
+        }
+
+        private SheetsService GetSheetsService()
+        {
+            var credential = this.GetCredential(this._credentialType, this._credentialsPath);
+            return this.GetSheets(credential);
         }
     }
 }
