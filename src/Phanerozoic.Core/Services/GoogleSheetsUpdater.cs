@@ -59,10 +59,10 @@ namespace Phanerozoic.Core.Services
 
             if (repositoryMethodList.Count <= 0)
             {
-                Console.WriteLine($"專案 {coverageEntity.Repository}, 目前沒有指定核心方法");
+                Console.WriteLine($"Repository: {coverageEntity.Repository}, Without Method.");
                 return repositoryMethodList;
             }
-            Console.WriteLine($"專案 {coverageEntity.Repository}, 核心方法數量: {repositoryMethodList.Count}");
+            Console.WriteLine($"Repository: {coverageEntity.Repository}, Method Count: {repositoryMethodList.Count}");
 
             var updateCount = 0;
             foreach (var coreMethod in repositoryMethodList)
@@ -91,7 +91,7 @@ namespace Phanerozoic.Core.Services
                 }
                 this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString(DateTimeHelper.Format));
             }
-            Console.WriteLine($"涵蓋率更新: {updateCount}/{repositoryMethodList.Count}");
+            Console.WriteLine($"Update Rate: {updateCount}/{repositoryMethodList.Count}");
 
             return repositoryMethodList;
         }

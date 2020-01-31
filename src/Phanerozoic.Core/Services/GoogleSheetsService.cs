@@ -32,7 +32,7 @@ namespace Phanerozoic.Core.Services
             this._credentialType = Enum.Parse<GoogleCredentialType>(configuration["Google:Credential:Type"]);
             this._credentialsPath = configuration["Google:Credential:File"];
 
-            Console.WriteLine($"使用的 Google API 授權類型: {this._credentialType.ToString()}");
+            Console.WriteLine($"Google API Credential Type: {this._credentialType.ToString()}");
         }
 
         private ICredential GetCredential(GoogleCredentialType credentialType, string credentialsPaht)
