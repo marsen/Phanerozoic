@@ -57,12 +57,11 @@ namespace Phanerozoic.Core.Services
 
             var repositoryMethodList = sheetMethodList.Where(i => i.Repository == coverageEntity.Repository).ToList();
 
+            Console.WriteLine($"Repository: {coverageEntity.Repository}, Method Count: {repositoryMethodList.Count}");
             if (repositoryMethodList.Count <= 0)
             {
-                Console.WriteLine($"Repository: {coverageEntity.Repository}, Without Method.");
                 return repositoryMethodList;
             }
-            Console.WriteLine($"Repository: {coverageEntity.Repository}, Method Count: {repositoryMethodList.Count}");
 
             var updateCount = 0;
             foreach (var coreMethod in repositoryMethodList)
