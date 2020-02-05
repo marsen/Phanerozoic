@@ -27,12 +27,18 @@ namespace Phanerozoic.Core.Services.Tests
             this._stubServiceProvider.GetService<IDateTimeHelper>().Returns(this._stubDateTimeHelper);
         }
 
-        [Fact(DisplayName = "每周一欄")]
+        [Fact(DisplayName = "每年一 Sheet,每周一 Column")]
         public void LogTest()
         {
             this.SheetRangeAssert(new DateTime(2019, 1, 1), "2019!A1");
+            this.SheetRangeAssert(new DateTime(2019, 1, 5), "2019!A1");
+            this.SheetRangeAssert(new DateTime(2019, 1, 6), "2019!B1");
+            this.SheetRangeAssert(new DateTime(2019, 12, 28), "2019!AZ1");
+            this.SheetRangeAssert(new DateTime(2019, 12, 29), "2019!BA1");
             this.SheetRangeAssert(new DateTime(2019, 12, 31), "2019!BA1");
             this.SheetRangeAssert(new DateTime(2020, 1, 1), "2020!A1");
+            this.SheetRangeAssert(new DateTime(2020, 1, 4), "2020!A1");
+            this.SheetRangeAssert(new DateTime(2020, 1, 5), "2020!B1");
         }
 
         private CoverageLog GetTarget()
@@ -42,6 +48,9 @@ namespace Phanerozoic.Core.Services.Tests
 
         private void SheetRangeAssert(DateTime time, string range)
         {
+            //// Initial
+            this._stubGoogleSheetsService.ClearReceivedCalls();
+
             //// Arrange
             var methodList = new List<MethodEntity>
             {
