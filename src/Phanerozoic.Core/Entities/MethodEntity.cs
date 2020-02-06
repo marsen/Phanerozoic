@@ -37,5 +37,17 @@ namespace Phanerozoic.Core.Entities
             this.LastCoverage = this.Coverage;
             this.Coverage = method.Coverage;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null && obj is MethodEntity)
+            {
+                var target = (MethodEntity)obj;
+                return (this.Project == target.Project &&
+                    this.Class == target.Class &&
+                    this.Method == target.Method);
+            }
+            return false;
+        }
     }
 }
