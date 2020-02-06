@@ -9,14 +9,14 @@ using Phanerozoic.Core.Helpers;
 
 namespace Phanerozoic.Core.Services
 {
-    public class CoverageLog : ICoverageLog
+    public class GoogleSheetsLogger : ICoverageLogger
     {
         private readonly IDateTimeHelper _dateTimeHelper;
         private readonly IGoogleSheetsService _googleSheetsService;
         private readonly IConfiguration _configuration;
         private string _sheetsId;
 
-        public CoverageLog(IServiceProvider serviceProvider, IConfiguration configuration)
+        public GoogleSheetsLogger(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             this._configuration = configuration;
             this._dateTimeHelper = serviceProvider.GetService<IDateTimeHelper>();

@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
-using System;
-using System.IO;
 
 namespace Phanerozoic.Core.Services
 {
@@ -12,6 +12,7 @@ namespace Phanerozoic.Core.Services
         private readonly IReportParser _reportParser;
         private readonly ICoverageUpdater _coverageUpdater;
         private readonly INotifyer _notifyer;
+        private readonly ICoverageLogger _coverageLogger;
 
         public CoverageProcessor(IServiceProvider serviceProvider)
         {
@@ -19,6 +20,7 @@ namespace Phanerozoic.Core.Services
             this._reportParser = serviceProvider.GetRequiredService<IReportParser>();
             this._coverageUpdater = serviceProvider.GetRequiredService<ICoverageUpdater>();
             this._notifyer = serviceProvider.GetRequiredService<INotifyer>();
+            this._coverageLogger = serviceProvider.GetRequiredService<ICoverageLogger>();
         }
 
         public void Process(ReportEntity reportEntity, CoverageEntity coverageEntity)
@@ -37,6 +39,9 @@ namespace Phanerozoic.Core.Services
 
             //// Notify
             this._notifyer.Notify(coverageEntity, updateMethodList);
+
+            //// Log
+            this._coverageLogger.Log(methodList);
         }
     }
 }

@@ -41,9 +41,9 @@ namespace Phanerozoic.Core.Services.Tests
             this.SheetRangeAssert(new DateTime(2020, 1, 5), "2020!B1");
         }
 
-        private CoverageLog GetTarget()
+        private GoogleSheetsLogger GetTarget()
         {
-            return new CoverageLog(this._stubServiceProvider, this._stubConfiguration);
+            return new GoogleSheetsLogger(this._stubServiceProvider, this._stubConfiguration);
         }
 
         private void SheetRangeAssert(DateTime time, string range)

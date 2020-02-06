@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using Phanerozoic.Core.Services;
-using System.IO;
 
 namespace Phanerozoic.Console
 {
@@ -47,6 +47,7 @@ namespace Phanerozoic.Console
             serviceCollection.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
             serviceCollection.AddScoped<INotifyer, SlackNotifyer>();
             serviceCollection.AddScoped<ISlackService, SlackService>();
+            serviceCollection.AddScoped<ICoverageLogger, GoogleSheetsLogger>();
             serviceCollection.AddHttpClient();
 
             var configurationRoot = new ConfigurationBuilder()
