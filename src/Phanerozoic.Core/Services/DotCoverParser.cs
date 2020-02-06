@@ -27,6 +27,9 @@ namespace Phanerozoic.Core.Services
             //// Method without argument
             result.ForEach(i => i.Method = i.Method.Substring(0, i.Method.IndexOf('(')));
 
+            //// Print Method
+            result.ForEach(i => Console.WriteLine(i.ToString()));
+
             Console.WriteLine($"Report Method Count: {result.Count}");
 
             return result;

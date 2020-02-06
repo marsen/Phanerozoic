@@ -28,7 +28,7 @@ namespace Phanerozoic.Core.Services.Tests
         }
 
         [Fact(DisplayName = "每年一 Sheet,每周一 Column")]
-        public void LogTest()
+        public void Test_Coverage_Log_Write_Cell_Column()
         {
             this.SheetRangeAssert(new DateTime(2019, 1, 1), "2019!A1");
             this.SheetRangeAssert(new DateTime(2019, 1, 5), "2019!A1");

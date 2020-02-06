@@ -1,4 +1,8 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
@@ -6,10 +10,6 @@ using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 
 namespace Phanerozoic.Core.Services
 {
@@ -51,6 +51,8 @@ namespace Phanerozoic.Core.Services
         {
             if (this._userCredential == null)
             {
+                //// TODO 提醒使用者在瀏覽器頁面開啟權限
+
                 using (var stream =
                     new FileStream(credentialsPath, FileMode.Open, FileAccess.Read))
                 {
