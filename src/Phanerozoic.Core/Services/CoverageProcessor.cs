@@ -41,7 +41,7 @@ namespace Phanerozoic.Core.Services
             this._notifyer.Notify(coverageEntity, updateMethodList);
 
             //// Log
-            this._coverageLogger.Log(methodList);
+            this._coverageLogger.Log(updateMethodList);
         }
     }
 }

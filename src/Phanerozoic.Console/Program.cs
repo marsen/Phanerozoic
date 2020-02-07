@@ -48,6 +48,7 @@ namespace Phanerozoic.Console
             serviceCollection.AddScoped<INotifyer, SlackNotifyer>();
             serviceCollection.AddScoped<ISlackService, SlackService>();
             serviceCollection.AddScoped<ICoverageLogger, GoogleSheetsLogger>();
+            serviceCollection.AddScoped<IDateTimeHelper, DateTimeHelper>();
             serviceCollection.AddHttpClient();
 
             var configurationRoot = new ConfigurationBuilder()

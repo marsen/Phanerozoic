@@ -31,15 +31,15 @@ namespace Phanerozoic.Core.Helpers
         /// <returns></returns>
         public static IList<IList<object>> ObjectToValues(object obj)
         {
-            List<List<object>> values = new List<List<object>>
+            IList<IList<object>> values = new List<IList<object>>
+            {
+                new List<object>
                 {
-                    new List<object>
-                    {
-                        obj
-                    }
-                };
+                    obj
+                }
+            };
 
-            return (IList<IList<object>>)values;
+            return values;
         }
     }
 }

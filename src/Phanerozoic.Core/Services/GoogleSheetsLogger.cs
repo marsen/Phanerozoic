@@ -50,14 +50,38 @@ namespace Phanerozoic.Core.Services
             int firstColumn = 3;
             var now = this._dateTimeHelper.Now;
             int week = this.GetWeek(now);
-            string column = SheetHelper.ColumnToLetter(firstColumn + week);
+            int column = firstColumn + week;
+            string columnLetter = SheetHelper.ColumnToLetter(column);
+
+            //// Write Column Name
             var columnName = $"{week}({now.ToString("MM/dd")})";
             Console.WriteLine($"Write Column: {columnName}");
+            var range = $"{now.Year}!{columnLetter}1";
+            var values = SheetHelper.ObjectToValues(columnName);
+            this._googleSheetsService.SetValue(this._sheetsId, range, values);
 
+            //// Write Method
             foreach (var method in currentMethodList)
             {
-                var range = $"{now.Year}!{column}{method.RawIndex}";
-                var values = SheetHelper.ObjectToValues(method.Coverage);
+                range = $"{now.Year}!{columnLetter}{method.RawIndex}";
+                values = SheetHelper.ObjectToValues(method.Coverage);
+                this._googleSheetsService.SetValue(this._sheetsId, range, values);
+            }
+
+            //// Write New Method
+            var index = methodList.Count + 1;
+            foreach (var method in newMethodList)
+            {
+                ++index;
+                range = $"{now.Year}!A{index}:{columnLetter}{index}";
+
+                var row = new object[column];
+                row[0] = method.Repository;
+                row[1] = method.Class;
+                row[2] = method.Method;
+                row[column -1] = method.Coverage;
+                values = new List<IList<object>> { row };
+
                 this._googleSheetsService.SetValue(this._sheetsId, range, values);
             }
         }
@@ -81,6 +105,11 @@ namespace Phanerozoic.Core.Services
             {
                 foreach (var row in values)
                 {
+                    if (row.Count < 3)
+                    {
+                        continue;
+                    }
+
                     index++;
                     var methodEntity = new MethodEntity
                     {
