@@ -43,7 +43,7 @@ namespace Phanerozoic.Core.Services
                         Project = row[1].ToString().Trim(),
                         Class = row[2].ToString().Trim(),
                         Method = row[3].ToString().Trim(),
-                        Coverage = int.Parse(row[4].ToString()),
+                        Coverage = SheetHelper.ObjectToInt(row[4]),
                         RawIndex = index,
                         RawData = row,
                     };

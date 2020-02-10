@@ -41,5 +41,21 @@ namespace Phanerozoic.Core.Helpers
 
             return values;
         }
+
+        /// <summary>
+        /// Sheet Cell Object To Integer
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static int ObjectToInt(object obj)
+        {
+            if (obj != null)
+            {
+                var str = obj.ToString();
+                int value;
+                return int.TryParse(str, out value) ? value : default;
+            }
+            return default;
+        }
     }
 }
