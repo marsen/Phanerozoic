@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Phanerozoic.Core.Services
 {
@@ -84,7 +84,7 @@ namespace Phanerozoic.Core.Services
 
                 Console.WriteLine($"{coreMethod.Class}.{coreMethod.Method}: {coreMethod.LastCoverage} {symbol} {coreMethod.Coverage}");
 
-                if (coreMethod.Status != CoverageStatus.Unchange)
+                if (coreMethod.Status != CoverageStatus.Unchange || coreMethod.Coverage == 0)
                 {
                     this.UpdateCell($"E{coreMethod.RawIndex}", coreMethod.Coverage);
                 }
