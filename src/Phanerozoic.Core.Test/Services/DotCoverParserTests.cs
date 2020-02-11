@@ -1,11 +1,12 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
 using Xunit;
 
 namespace Phanerozoic.Core.Services.Tests
@@ -14,10 +15,12 @@ namespace Phanerozoic.Core.Services.Tests
     {
         private readonly IServiceProvider _stubServiceProvider;
         private readonly IFileHelper _stubFileHelper;
+        private readonly IConfiguration _stubConfiguration;
 
         public DotCoverParserTests()
         {
             this._stubFileHelper = Substitute.For<IFileHelper>();
+            this._stubConfiguration = Substitute.For<IConfiguration>();
 
             this._stubServiceProvider = Substitute.For<IServiceProvider>();
             this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
@@ -111,7 +114,7 @@ namespace Phanerozoic.Core.Services.Tests
 
         private DotCoverParser GetTarget()
         {
-            return new DotCoverParser(this._stubServiceProvider);
+            return new DotCoverParser(this._stubServiceProvider, this._stubConfiguration);
         }
     }
 }

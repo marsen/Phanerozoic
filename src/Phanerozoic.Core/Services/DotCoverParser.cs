@@ -1,19 +1,27 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Phanerozoic.Core.Entities;
-using Phanerozoic.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Helpers;
 
 namespace Phanerozoic.Core.Services
 {
     public class DotCoverParser : IReportParser
     {
         private readonly IFileHelper _fileHelper;
+        private readonly IConfiguration _configuration;
 
-        public DotCoverParser(IServiceProvider serviceProvider)
+        private bool _printMethod = false;
+
+        public DotCoverParser(IServiceProvider serviceProvider, IConfiguration configuration)
         {
+            this._configuration = configuration;
+
             this._fileHelper = serviceProvider.GetRequiredService<IFileHelper>();
+
+            bool.TryParse(this._configuration["Google:Sheets:Id"], out this._printMethod);
         }
 
         public IList<MethodEntity> Parser(ReportEntity reportEntity)
@@ -28,7 +36,10 @@ namespace Phanerozoic.Core.Services
             result.ForEach(i => i.Method = i.Method.Substring(0, i.Method.IndexOf('(')));
 
             //// Print Method
-            result.ForEach(i => Console.WriteLine(i.ToString()));
+            if (this._printMethod)
+            {
+                result.ForEach(i => Console.WriteLine(i.ToString()));
+            }
 
             Console.WriteLine($"Report Method Count: {result.Count}");
 
