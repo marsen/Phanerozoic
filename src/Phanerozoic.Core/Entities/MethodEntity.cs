@@ -44,7 +44,7 @@ namespace Phanerozoic.Core.Entities
             if (obj != null && obj is MethodEntity)
             {
                 var target = (MethodEntity)obj;
-                return (this.Project == target.Project &&
+                return (this.Repository == target.Repository &&
                     this.Class == target.Class &&
                     this.Method == target.Method);
             }

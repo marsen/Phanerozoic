@@ -69,9 +69,11 @@ namespace Phanerozoic.Core.Services
             }
 
             //// Write New Method
-            var index = methodList.Count + 1;
+            var index = currentMethodList.Count + 1;
             foreach (var method in newMethodList)
             {
+                Console.WriteLine($"{method.ToString()}");
+
                 ++index;
                 range = $"{now.Year}!A{index}:{columnLetter}{index}";
 
@@ -79,7 +81,7 @@ namespace Phanerozoic.Core.Services
                 row[0] = method.Repository;
                 row[1] = method.Class;
                 row[2] = method.Method;
-                row[column -1] = method.Coverage;
+                row[column - 1] = method.Coverage;
                 values = new List<IList<object>> { row };
 
                 this._googleSheetsService.SetValue(this._sheetsId, range, values);
