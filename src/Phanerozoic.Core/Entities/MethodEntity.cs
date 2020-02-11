@@ -14,6 +14,7 @@ namespace Phanerozoic.Core.Entities
         public int RawIndex { get; set; }
         public IList<object> RawData { get; set; }
         public string Team { get; set; }
+        public string UpdatedDate { get; set; }
 
         public override string ToString()
         {

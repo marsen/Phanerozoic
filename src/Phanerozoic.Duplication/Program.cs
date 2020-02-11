@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Phanerozoic.Duplication
 {
@@ -52,12 +52,15 @@ namespace Phanerozoic.Duplication
             //// Read
             var firstRow = 2;
             var maxRow = 100;
-            var range = $"{sheetName}!A{firstRow}:G{maxRow}";
+            var startColumn = "A";
+            var endColumn = "J";
+            var range = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{maxRow}";
             var sourceList = googleSheetsService.GetValues(sourceId, range);
             var methodList = Program.SheetRangeToEntityList(sourceList);
 
             //// Write
-            var targetRange = $"{sheetName}!A{firstRow}:G{sourceList.Count + 1}";
+            endColumn = "H";
+            var targetRange = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{sourceList.Count + 1}";
             var targetList = Program.EntityListToSheetRange(methodList);
             googleSheetsService.SetValue(targetId, targetRange, targetList);
         }
@@ -77,6 +80,7 @@ namespace Phanerozoic.Duplication
                         Method = row[3].ToString().Trim(),
                         Coverage = int.Parse(row[4].ToString()),
                         Team = row[6].ToString().Trim(),
+                        UpdatedDate = row.Count < 10 ? string.Empty : row[9].ToString().Trim(),
                         RawData = row,
                     };
 
@@ -95,7 +99,17 @@ namespace Phanerozoic.Duplication
             var rowList = new List<IList<object>>();
             foreach (var method in methodList)
             {
-                var row = method.RawData;
+                var row = new List<object>
+                {
+                    method.Repository,
+                    method.Project,
+                    method.Class,
+                    method.Method,
+                    method.Coverage,
+                    method.RawData[5],
+                    method.Team,
+                    method.UpdatedDate,
+                };
                 rowList.Add(row);
             }
 
