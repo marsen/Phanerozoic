@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Helpers;
 using Phanerozoic.Core.Services;
 
 namespace Phanerozoic.Duplication
@@ -27,6 +28,7 @@ namespace Phanerozoic.Duplication
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
+            serviceCollection.AddScoped<IDateTimeHelper, DateTimeHelper>();
 
             var configurationRoot = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -47,6 +49,13 @@ namespace Phanerozoic.Duplication
 
             Console.WriteLine($"Source Sheets ID: {sourceId}");
             Console.WriteLine($"Target Sheets ID: {targetId}");
+
+            DuplicateCoverage(googleSheetsService, sourceId, targetId);
+            DuplicateCoverageLog(serviceProvider, googleSheetsService, sourceId, targetId);
+        }
+
+        private static void DuplicateCoverage(IGoogleSheetsService googleSheetsService, string sourceId, string targetId)
+        {
             var sheetName = "Coverage";
 
             //// Read
@@ -63,6 +72,26 @@ namespace Phanerozoic.Duplication
             var targetRange = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{sourceList.Count + 1}";
             var targetList = Program.EntityListToSheetRange(methodList);
             googleSheetsService.SetValue(targetId, targetRange, targetList);
+        }
+
+        private static void DuplicateCoverageLog(IServiceProvider serviceProvider, IGoogleSheetsService googleSheetsService, string sourceId, string targetId)
+        {
+            var dateTimeHelper = serviceProvider.GetService<IDateTimeHelper>();
+
+            var now = dateTimeHelper.Now;
+            var sheetName = now.ToString("yyyy");
+
+            //// Read
+            var firstRow = 1;
+            var maxRow = 100;
+            var startColumn = "A";
+            var endColumn = "BH";
+            var range = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{maxRow}";
+            var sourceList = googleSheetsService.GetValues(sourceId, range);
+
+            //// Write
+            var targetRange = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{sourceList.Count + 1}";
+            googleSheetsService.SetValue(targetId, targetRange, sourceList);
         }
 
         private static List<MethodEntity> SheetRangeToEntityList(IList<IList<object>> sheetRange)
