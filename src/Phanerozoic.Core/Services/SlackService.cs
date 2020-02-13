@@ -26,7 +26,7 @@ namespace Phanerozoic.Core.Services
 
             var response = httpClient.SendAsync(request).Result;
 
-            Console.WriteLine(response.StatusCode.ToString());
+            Console.WriteLine($"Slack Response: {response.StatusCode.ToString()}");
         }
     }
 }

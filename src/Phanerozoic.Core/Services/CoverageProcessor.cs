@@ -32,15 +32,19 @@ namespace Phanerozoic.Core.Services
             }
 
             //// Parser
+            Console.WriteLine("* Parser");
             var methodList = this._reportParser.Parser(reportEntity);
 
             //// Update
+            Console.WriteLine("* Update");
             var updateMethodList = this._coverageUpdater.Update(coverageEntity, methodList);
 
             //// Notify
+            Console.WriteLine("* Notify");
             this._notifyer.Notify(coverageEntity, updateMethodList);
 
             //// Log
+            Console.WriteLine("* Log");
             this._coverageLogger.Log(updateMethodList);
         }
     }
