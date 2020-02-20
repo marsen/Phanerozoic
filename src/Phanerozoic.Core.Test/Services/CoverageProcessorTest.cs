@@ -18,6 +18,7 @@ namespace Phanerozoic.Core.Test.Services
         private readonly IReportParser _stubReportParser;
         private readonly ICoverageUpdater _stubCoverageUpdater;
         private readonly INotifyer _stubNotifyer;
+        private readonly ICoverageLogger _stubCoverageLogger;
 
         public CoverageProcessorTest()
         {
@@ -25,12 +26,14 @@ namespace Phanerozoic.Core.Test.Services
             this._stubReportParser = Substitute.For<IReportParser>();
             this._stubCoverageUpdater = Substitute.For<ICoverageUpdater>();
             this._stubNotifyer = Substitute.For<INotifyer>();
+            this._stubCoverageLogger = Substitute.For<ICoverageLogger>();
 
             this._stubServiceProvider = Substitute.For<IServiceProvider>();
             this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
             this._stubServiceProvider.GetService<IReportParser>().Returns(this._stubReportParser);
             this._stubServiceProvider.GetService<ICoverageUpdater>().Returns(this._stubCoverageUpdater);
             this._stubServiceProvider.GetService<INotifyer>().Returns(this._stubNotifyer);
+            this._stubServiceProvider.GetService<ICoverageLogger>().Returns(this._stubCoverageLogger);
         }
 
         [Fact(DisplayName = "Happy Path")]
