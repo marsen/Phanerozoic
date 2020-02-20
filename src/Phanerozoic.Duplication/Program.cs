@@ -20,6 +20,7 @@ namespace Phanerozoic.Duplication
             // create service provider
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
+            Console.WriteLine("* Duplicate");
             Duplicate(serviceProvider);
 
             serviceProvider.Dispose();

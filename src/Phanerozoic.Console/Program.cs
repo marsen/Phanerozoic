@@ -20,7 +20,7 @@ namespace Phanerozoic.Console
 
             var reportEntity = new ReportEntity
             {
-                FilePath = args[0]
+                FilePath = args[0].Trim(),
             };
 
             var file = new FileInfo(reportEntity.FilePath);
@@ -29,7 +29,8 @@ namespace Phanerozoic.Console
             var coverageEntity = new CoverageEntity
             {
                 FilePath = Path.Combine(file.DirectoryName, $"{fileName}.csv"),
-                Repository = args[1],
+                Repository = args[1].Trim(),
+                Project = args[2].Trim(),
             };
 
             var coverageProcessor = serviceProvider.GetService<ICoverageProcessor>();

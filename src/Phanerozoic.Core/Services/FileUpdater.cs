@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Phanerozoic.Core.Entities;
-using Phanerozoic.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Helpers;
 
 namespace Phanerozoic.Core.Services
 {

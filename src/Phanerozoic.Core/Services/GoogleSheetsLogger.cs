@@ -116,8 +116,9 @@ namespace Phanerozoic.Core.Services
                     var methodEntity = new MethodEntity
                     {
                         Repository = row[0].ToString().Trim(),
-                        Class = row[1].ToString().Trim(),
-                        Method = row[2].ToString().Trim(),
+                        Project = row[1].ToString().Trim(),
+                        Class = row[2].ToString().Trim(),
+                        Method = row[3].ToString().Trim(),
                         RawIndex = index,
                         RawData = row,
                     };

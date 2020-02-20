@@ -26,10 +26,16 @@ namespace Phanerozoic.Core.Services
 
         public IList<MethodEntity> Update(CoverageEntity coverageEntity, IList<MethodEntity> reportMethodList)
         {
+            var reportMethodTotalCount = reportMethodList.Count;
+            reportMethodList = this.FilterMethod(coverageEntity, reportMethodList);
+            Console.WriteLine("** Report Method");
+            Console.WriteLine($"Repository: {coverageEntity.Repository}, Project: {coverageEntity.Project}, Method Count: {reportMethodList.Count}/{reportMethodTotalCount}");
+
             var startIndex = 1;
             var maxRow = 100;
-            List<MethodEntity> sheetMethodList = new List<MethodEntity>();
-            IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"Coverage!A{startIndex + 1}:I{maxRow}");
+            var sheetName = "Coverage";
+            IList<MethodEntity> sheetMethodList = new List<MethodEntity>();
+            IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"{sheetName}!A{startIndex + 1}:I{maxRow}");
 
             var index = startIndex;
             if (values != null && values.Count > 0)
@@ -55,16 +61,17 @@ namespace Phanerozoic.Core.Services
                 }
             }
 
-            var repositoryMethodList = sheetMethodList.Where(i => i.Repository == coverageEntity.Repository).ToList();
-
-            Console.WriteLine($"Repository: {coverageEntity.Repository}, Method Count: {repositoryMethodList.Count}");
-            if (repositoryMethodList.Count <= 0)
+            var sheetMethodTotalCount = sheetMethodList.Count;
+            sheetMethodList = this.FilterMethod(coverageEntity, sheetMethodList);
+            Console.WriteLine("** Sheet Method");
+            Console.WriteLine($"Repository: {coverageEntity.Repository}, Project: {coverageEntity.Project}, Method Count: {sheetMethodList.Count}/{sheetMethodTotalCount}");
+            if (sheetMethodList.Count <= 0)
             {
-                return repositoryMethodList;
+                return sheetMethodList;
             }
 
             var updateCount = 0;
-            foreach (var coreMethod in repositoryMethodList)
+            foreach (var coreMethod in sheetMethodList)
             {
                 var reportMethod = reportMethodList.FirstOrDefault(i => i.Class == coreMethod.Class && i.Method == coreMethod.Method);
 
@@ -90,9 +97,23 @@ namespace Phanerozoic.Core.Services
                 }
                 this.UpdateCell($"J{coreMethod.RawIndex}", DateTime.Now.ToString(DateTimeHelper.Format));
             }
-            Console.WriteLine($"Update Rate: {updateCount}/{repositoryMethodList.Count}");
+            Console.WriteLine($"Update Rate: {updateCount}/{sheetMethodList.Count}");
 
-            return repositoryMethodList;
+            return sheetMethodList;
+        }
+
+        /// <summary>
+        /// 只保留指定的 Repository 與 Project 下的方法
+        /// </summary>
+        /// <param name="coverageEntity"></param>
+        /// <param name="methodList"></param>
+        /// <returns></returns>
+        private IList<MethodEntity> FilterMethod(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
+        {
+            return methodList.Where(i =>
+                            i.Repository == coverageEntity.Repository &&
+                            i.Project == coverageEntity.Project
+                            ).ToList();
         }
 
         private void UpdateCell(string range, object value)

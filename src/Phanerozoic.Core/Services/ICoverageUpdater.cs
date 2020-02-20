@@ -1,5 +1,5 @@
-﻿using Phanerozoic.Core.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Phanerozoic.Core.Entities;
 
 namespace Phanerozoic.Core.Services
 {
