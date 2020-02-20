@@ -24,16 +24,21 @@ namespace Phanerozoic.Core.Services
             bool.TryParse(this._configuration["Parser:PrintMethod"], out this._printMethod);
         }
 
-        public IList<MethodEntity> Parser(ReportEntity reportEntity)
+        public IList<MethodEntity> Parser(CoverageEntity coverageEntity, ReportEntity reportEntity)
         {
             var json = this._fileHelper.ReadAllText(reportEntity.FilePath);
             var report = JsonSerializer.Deserialize<DotCoverReport>(json);
 
             var result = new List<MethodEntity>();
-            FindMethod(result, string.Empty, report.Children);
+            FindMethod(result, string.Empty, string.Empty, report.Children);
 
             //// Method without argument
-            result.ForEach(i => i.Method = i.Method.Substring(0, i.Method.IndexOf('(')));
+            //// Set Repository
+            result.ForEach(i =>
+            {
+                i.Method = i.Method.Substring(0, i.Method.IndexOf('('));
+                i.Repository = coverageEntity.Repository;
+            });
 
             //// Print Method
             if (this._printMethod)
@@ -51,7 +56,7 @@ namespace Phanerozoic.Core.Services
         /// </summary>
         /// <param name="result">回傳值</param>
         /// <param name="source">目前的階層</param>
-        private void FindMethod(List<MethodEntity> result, string parentName, List<DotCoverReportChild> source)
+        private void FindMethod(List<MethodEntity> result, string assembly, string parentName, List<DotCoverReportChild> source)
         {
             if (source == null)
             {
@@ -65,6 +70,7 @@ namespace Phanerozoic.Core.Services
                 {
                     var covearge = new MethodEntity
                     {
+                        Project = assembly,
                         Class = iName.Remove(iName.Length - 1, 1),
                         Method = item.Name,
                         Coverage = (int)item.CoveragePercent,
@@ -73,12 +79,13 @@ namespace Phanerozoic.Core.Services
                 }
                 else if (item.Kind == Kind.Assembly)
                 {
-                    FindMethod(result, iName, item.Children);
+                    assembly = item.Name;
+                    FindMethod(result, assembly, iName, item.Children);
                 }
                 else
                 {
                     iName += $"{item.Name}.";
-                    FindMethod(result, iName, item.Children);
+                    FindMethod(result, assembly, iName, item.Children);
                 }
             }
         }

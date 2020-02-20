@@ -56,7 +56,7 @@ namespace Phanerozoic.Core.Test.Services
             target.Process(reportEntity, coverageEntity);
 
             //// assert
-            this._stubReportParser.Received(1).Parser(Arg.Any<ReportEntity>());
+            this._stubReportParser.Received(1).Parser(Arg.Any<CoverageEntity>(), Arg.Any<ReportEntity>());
             this._stubCoverageUpdater.Received(1).Update(Arg.Any<CoverageEntity>(), Arg.Any<IList<MethodEntity>>());
             this._stubNotifyer.Received(1).Notify(Arg.Any<CoverageEntity>(), Arg.Any<IList<MethodEntity>>());
         }

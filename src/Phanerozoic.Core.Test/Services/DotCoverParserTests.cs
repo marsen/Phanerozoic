@@ -100,14 +100,19 @@ namespace Phanerozoic.Core.Services.Tests
 
             this._stubFileHelper.ReadAllText(Arg.Any<string>()).Returns(reportJson);
 
+            var coverageEntity = new CoverageEntity
+            {
+                Repository = "Phanerozoic",
+            };
+
             var reportEntity = new ReportEntity
             {
-                FilePath = "report.json"
+                FilePath = "report.json",
             };
 
             //// act
             var target = GetTarget();
-            var actual = target.Parser(reportEntity);
+            var actual = target.Parser(coverageEntity, reportEntity);
 
             actual.Count.Should().Be(1);
         }

@@ -33,7 +33,7 @@ namespace Phanerozoic.Core.Services
 
             //// Parser
             Console.WriteLine("* Parser");
-            var methodList = this._reportParser.Parser(reportEntity);
+            var methodList = this._reportParser.Parser(coverageEntity, reportEntity);
 
             //// Update
             Console.WriteLine("* Update");
