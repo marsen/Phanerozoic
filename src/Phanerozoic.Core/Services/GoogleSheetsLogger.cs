@@ -47,7 +47,7 @@ namespace Phanerozoic.Core.Services
             }
 
             //// Write Log Data
-            int firstColumn = 3;
+            int firstColumn = 4;
             var now = this._dateTimeHelper.Now;
             int week = this.GetWeek(now);
             int column = firstColumn + week;
@@ -79,8 +79,9 @@ namespace Phanerozoic.Core.Services
 
                 var row = new object[column];
                 row[0] = method.Repository;
-                row[1] = method.Class;
-                row[2] = method.Method;
+                row[1] = method.Project;
+                row[2] = method.Class;
+                row[3] = method.Method;
                 row[column - 1] = method.Coverage;
                 values = new List<IList<object>> { row };
 
@@ -107,7 +108,7 @@ namespace Phanerozoic.Core.Services
             {
                 foreach (var row in values)
                 {
-                    if (row.Count < 3)
+                    if (row.Count < 4)
                     {
                         continue;
                     }
