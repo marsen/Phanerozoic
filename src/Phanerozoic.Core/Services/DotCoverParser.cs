@@ -21,7 +21,7 @@ namespace Phanerozoic.Core.Services
 
             this._fileHelper = serviceProvider.GetRequiredService<IFileHelper>();
 
-            bool.TryParse(this._configuration["Google:Sheets:Id"], out this._printMethod);
+            bool.TryParse(this._configuration["Parser:PrintMethod"], out this._printMethod);
         }
 
         public IList<MethodEntity> Parser(ReportEntity reportEntity)
