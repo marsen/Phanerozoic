@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Phanerozoic.Core.Entities
 {
@@ -23,6 +24,11 @@ namespace Phanerozoic.Core.Entities
 
         public void UpdateCoverage(MethodEntity method)
         {
+            if (this.Equals(method) == false)
+            {
+                throw new ApplicationException($"MethodEntity Not Match! {this.ToString()} vs {method.ToString()}");
+            }
+
             if (this.Coverage == method.Coverage)
             {
                 this.Status = CoverageStatus.Unchange;
