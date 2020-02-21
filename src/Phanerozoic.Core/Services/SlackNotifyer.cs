@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Phanerozoic.Core.Entities;
-using Phanerozoic.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Helpers;
 
 namespace Phanerozoic.Core.Services
 {
@@ -69,7 +69,7 @@ namespace Phanerozoic.Core.Services
                 Color = color
             };
 
-            attachment.Pretext = $"Phanerozoic Notify @{DateTime.Now.ToString(DateTimeHelper.Format)}";
+            attachment.Pretext = $"Phanerozoic Notify";
 
             attachment.Title = $"Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}";
 

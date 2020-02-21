@@ -38,7 +38,7 @@ namespace Phanerozoic.Core.Services
 
                 if (methodLog != null)
                 {
-                    methodLog.Coverage = method.Coverage;
+                    methodLog.UpdateCoverage(method);
                 }
                 else
                 {
@@ -61,14 +61,20 @@ namespace Phanerozoic.Core.Services
             this._googleSheetsService.SetValue(this._sheetsId, range, values);
 
             //// Write Method
+            Console.WriteLine("** Write Coverage Log");
             foreach (var method in currentMethodList)
             {
-                range = $"{now.Year}!{columnLetter}{method.RawIndex}";
-                values = SheetHelper.ObjectToValues(method.Coverage);
-                this._googleSheetsService.SetValue(this._sheetsId, range, values);
+                if (method.Status != CoverageStatus.Unchange)
+                {
+                    Console.WriteLine($"{method.ToString()}");
+                    range = $"{now.Year}!{columnLetter}{method.RawIndex}";
+                    values = SheetHelper.ObjectToValues(method.Coverage);
+                    this._googleSheetsService.SetValue(this._sheetsId, range, values);
+                }
             }
 
             //// Write New Method
+            Console.WriteLine("** Write New Method");
             var index = currentMethodList.Count + 1;
             foreach (var method in newMethodList)
             {
