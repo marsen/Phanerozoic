@@ -65,12 +65,14 @@ namespace Phanerozoic.Duplication
             var startColumn = "A";
             var endColumn = "J";
             var range = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{maxRow}";
+            Console.WriteLine($"Source Range: {range}");
             var sourceList = googleSheetsService.GetValues(sourceId, range);
             var methodList = Program.SheetRangeToEntityList(sourceList);
 
             //// Write
             endColumn = "H";
             var targetRange = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{sourceList.Count + 1}";
+            Console.WriteLine($"Target Range: {targetRange}");
             var targetList = Program.EntityListToSheetRange(methodList);
             googleSheetsService.SetValue(targetId, targetRange, targetList);
         }
@@ -88,10 +90,12 @@ namespace Phanerozoic.Duplication
             var startColumn = "A";
             var endColumn = "BH";
             var range = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{maxRow}";
+            Console.WriteLine($"Source Range: {range}");
             var sourceList = googleSheetsService.GetValues(sourceId, range);
 
             //// Write
             var targetRange = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{sourceList.Count + 1}";
+            Console.WriteLine($"Target Range: {targetRange}");
             googleSheetsService.SetValue(targetId, targetRange, sourceList);
         }
 
