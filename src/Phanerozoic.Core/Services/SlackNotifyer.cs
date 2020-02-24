@@ -66,12 +66,11 @@ namespace Phanerozoic.Core.Services
             var color = downCount > 0 ? "#FF0000" : "#00FF00";
             var attachment = new Attachment
             {
-                Color = color
+                Color = color,
+                AuthorName = $"Repository: {coverageEntity.Repository}, Project:{coverageEntity.Project}",
+                Title = $"涵蓋率下降方法數量 {downCount}",
+                Footer = $"Phanerozoic Notifyer",
             };
-
-            attachment.Pretext = $"Phanerozoic Notify";
-
-            attachment.Title = $"Repository: {coverageEntity.Repository}, 涵蓋率下降方法數量 {downCount}";
 
             var stringBuilder = new StringBuilder();
             foreach (var method in methodList)
