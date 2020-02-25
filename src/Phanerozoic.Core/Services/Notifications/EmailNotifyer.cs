@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
@@ -37,13 +38,21 @@ namespace Phanerozoic.Core.Services.Notifications
 
         public void Notify(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
-            var subject = "Phanerozic Notify";
-            var body = string.Empty;
-
             Console.WriteLine($"Email From: {this._from}");
             Console.WriteLine($"To: {string.Join(',', this._toList)}");
 
-            this._emailService.Send(this._from, this._toList, subject, body);
+            var subject = $"Phanerozic Notify - {coverageEntity.Repository} - {coverageEntity.Project}";
+
+            var projectMethod = methodList.Where(i => i.Repository == coverageEntity.Repository && i.Project == coverageEntity.Project).ToList();
+            var downMethod = projectMethod.Where(i => i.Status == CoverageStatus.Down).ToList();
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"Repository: {coverageEntity.Repository}");
+            stringBuilder.AppendLine($"Project: {coverageEntity.Project}");
+            stringBuilder.AppendLine($"Coverage Down Rate: {downMethod.Count}/{projectMethod.Count}");
+            downMethod.ForEach(i => stringBuilder.AppendLine($"{i.Class}.{i.Method}: {i.LastCoverage} → {i.Coverage}"));
+
+            this._emailService.Send(this._from, this._toList, subject, stringBuilder.ToString());
         }
     }
 }

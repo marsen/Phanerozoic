@@ -48,7 +48,7 @@ namespace Phanerozoic.Core.Services
             //// Notify
             Console.WriteLine("* Notify");
             this._slackNotifyer.Notify(coverageEntity, updateMethodList);
-            this._emailNotifyer.Notify(coverageEntity, methodList);
+            this._emailNotifyer.Notify(coverageEntity, updateMethodList);
 
             //// Log
             Console.WriteLine("* Log");
