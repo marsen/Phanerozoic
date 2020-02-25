@@ -67,8 +67,8 @@ namespace Phanerozoic.Core.Services
             var attachment = new Attachment
             {
                 Color = color,
-                AuthorName = $"Repository: {coverageEntity.Repository}, Project:{coverageEntity.Project}",
-                Title = $"涵蓋率下降方法數量 {downCount}",
+                AuthorName = $"Repository: {coverageEntity.Repository}",
+                Title = $"Project: {coverageEntity.Project} 涵蓋率下降方法數量: {downCount}",
                 Footer = $"Phanerozoic Notifyer",
             };
 
