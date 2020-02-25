@@ -52,11 +52,18 @@ reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targ
 > [OpenCover 介紹篇](https://ithelp.ithome.com.tw/articles/10187410)
 
 ## Update  
-#### Google Sheet
+### Google Sheet
 > [Google Sheets API](https://developers.google.com/sheets/api/quickstart/dotnet)
 
 ## Notify  
-#### Slack  
+### Slack  
 > [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)  
 > [Block Kit Builder](https://api.slack.com/tools/block-kit-builder)  
 > [Message Formatting](https://api.slack.com/docs/messages/builder)  
+
+### Email
+> [~~SmtpClient~~](https://docs.microsoft.com/zh-tw/dotnet/api/system.net.mail.smtpclient?view=netcore-3.1)  
+> [MailKit](https://github.com/jstedfast/MailKit)
+
+#### Gmail
+> [Sign in using App Passwords](https://support.google.com/accounts/answer/185833?hl=en&ctx=ch_DisplayUnlockCaptcha)

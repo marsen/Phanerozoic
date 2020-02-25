@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
 using Phanerozoic.Core.Services;
+using Phanerozoic.Core.Services.Googles;
+using Phanerozoic.Core.Services.Interface;
+using Phanerozoic.Core.Services.Notifications;
 
 namespace Phanerozoic.Console
 {
@@ -50,6 +53,8 @@ namespace Phanerozoic.Console
             serviceCollection.AddScoped<ISlackService, SlackService>();
             serviceCollection.AddScoped<ICoverageLogger, GoogleSheetsLogger>();
             serviceCollection.AddScoped<IDateTimeHelper, DateTimeHelper>();
+            serviceCollection.AddScoped<INotifyer, EmailNotifyer>();
+            serviceCollection.AddScoped<IEmailService, GmailService>();
             serviceCollection.AddHttpClient();
 
             var configurationRoot = new ConfigurationBuilder()
