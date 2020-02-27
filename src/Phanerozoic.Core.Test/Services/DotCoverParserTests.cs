@@ -114,7 +114,7 @@ namespace Phanerozoic.Core.Services.Tests
             var target = GetTarget();
             var actual = target.Parser(coverageEntity, reportEntity);
 
-            actual.Count.Should().Be(1);
+            actual.Count.Should().Be(2);
         }
 
         private DotCoverParser GetTarget()
