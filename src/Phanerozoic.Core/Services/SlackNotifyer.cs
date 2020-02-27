@@ -28,7 +28,7 @@ namespace Phanerozoic.Core.Services
         {
             var slackMessageJson = this.GetSlackMessage(coverageEntity, methodList);
 
-            if (slackMessageJson.Length <= 0)
+            if (string.IsNullOrWhiteSpace(slackMessageJson))
             {
                 return;
             }
@@ -63,6 +63,11 @@ namespace Phanerozoic.Core.Services
         private string GetSlackMessage(CoverageEntity coverageEntity, IList<MethodEntity> methodList)
         {
             var downCount = methodList.Count(i => i.Status == CoverageStatus.Down);
+            if (downCount == 0)
+            {
+                return null;
+            }
+
             var color = downCount > 0 ? "#FF0000" : "#00FF00";
             var attachment = new Attachment
             {

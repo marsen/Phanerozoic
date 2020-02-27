@@ -26,7 +26,7 @@ namespace Phanerozoic.Core.Test.Services
             this._stubServiceProvider.GetService<IConfiguration>().Returns(this._stubConfiguration);
         }
 
-        [Fact(Skip = "未下降一樣發通知")]
+        [Fact]
         public void Test涵蓋率未下降則不發通知()
         {
             //// Arrange
