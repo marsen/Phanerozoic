@@ -1,11 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Phanerozoic.Core.Entities;
+using Phanerozoic.Core.Services.Interface;
 using Xunit;
 
 namespace Phanerozoic.Core.Services.Notifications.Tests
 {
     public class GmailNotifyerTests
     {
+        private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
+        private readonly IServiceProvider _serviceProvider;
+        public GmailNotifyerTests()
+        {
+            this._configuration = Substitute.For<IConfiguration>();
+            this._emailService = Substitute.For<IEmailService>();
+
+            this._serviceProvider = Substitute.For<IServiceProvider>();
+            this._serviceProvider.GetService<IConfiguration>().Returns(this._configuration);
+            this._serviceProvider.GetService<IEmailService>().Returns(this._emailService);
+        }
         [Fact()]
         public void NotifyTest()
         {
@@ -28,6 +45,7 @@ namespace Phanerozoic.Core.Services.Notifications.Tests
                     Coverage = 12,
                 }
             };
+            this._configuration["Notification:To"].Returns("user@mail.com");
 
             //// Act
             EmailNotifyer target = this.GetTarget();
@@ -39,7 +57,7 @@ namespace Phanerozoic.Core.Services.Notifications.Tests
 
         private EmailNotifyer GetTarget()
         {
-            return new EmailNotifyer(null);
+            return new EmailNotifyer(this._serviceProvider);
         }
     }
 }

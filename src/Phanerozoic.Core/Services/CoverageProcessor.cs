@@ -10,6 +10,7 @@ namespace Phanerozoic.Core.Services
 {
     public class CoverageProcessor : ICoverageProcessor
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IFileHelper _fileHelper;
         private readonly IReportParser _reportParser;
         private readonly ICoverageUpdater _coverageUpdater;
@@ -19,14 +20,11 @@ namespace Phanerozoic.Core.Services
 
         public CoverageProcessor(IServiceProvider serviceProvider)
         {
+            this._serviceProvider = serviceProvider;
             this._fileHelper = serviceProvider.GetRequiredService<IFileHelper>();
             this._reportParser = serviceProvider.GetRequiredService<IReportParser>();
             this._coverageUpdater = serviceProvider.GetRequiredService<ICoverageUpdater>();
             this._coverageLogger = serviceProvider.GetRequiredService<ICoverageLogger>();
-
-            var notifyList = serviceProvider.GetServices<INotifyer>();
-            this._slackNotifyer = notifyList.First(i => i is SlackNotifyer);
-            this._emailNotifyer = notifyList.First(i => i is EmailNotifyer);
         }
 
         public void Process(ReportEntity reportEntity, CoverageEntity coverageEntity)
@@ -47,12 +45,24 @@ namespace Phanerozoic.Core.Services
 
             //// Notify
             Console.WriteLine("* Notify");
-            this._slackNotifyer.Notify(coverageEntity, updateMethodList);
-            this._emailNotifyer.Notify(coverageEntity, updateMethodList);
+            this.GetSlackNotifyer().Notify(coverageEntity, updateMethodList);
+            this.GetEmailNotifyer().Notify(coverageEntity, updateMethodList);
 
             //// Log
             Console.WriteLine("* Log");
             this._coverageLogger.Log(updateMethodList);
+        }
+
+        protected virtual INotifyer GetSlackNotifyer()
+        {
+            var notifyList = this._serviceProvider.GetServices<INotifyer>();
+            return notifyList.FirstOrDefault(i => i is SlackNotifyer);
+        }
+
+        protected virtual INotifyer GetEmailNotifyer()
+        {
+            var notifyList = this._serviceProvider.GetServices<INotifyer>();
+            return notifyList.FirstOrDefault(i => i is EmailNotifyer);
         }
     }
 }
