@@ -53,7 +53,8 @@ reportgenerator -reports:./output/coverage.opencover.xml -reporttypes:Html -targ
 
 ## Update  
 ### Google Sheet
-> [Google Sheets API](https://developers.google.com/sheets/api/quickstart/dotnet)
+> [Google Sheets API](https://developers.google.com/sheets/api/quickstart/dotnet)  
+> [Google Sheets API v4 - How to get the last row with value?](https://stackoverflow.com/questions/37331756/google-sheets-api-v4-how-to-get-the-last-row-with-value)
 
 ## Notify  
 ### Slack  
