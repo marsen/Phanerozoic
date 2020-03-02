@@ -105,7 +105,7 @@ namespace Phanerozoic.Core.Services
         {
             var now = this._dateTimeHelper.Now;
             var startIndex = 1;
-            var maxRow = 100;
+            var maxRow = string.Empty;
             List<MethodEntity> methodLogList = new List<MethodEntity>();
             IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"{now.Year}!A{startIndex + 1}:I{maxRow}");
 
