@@ -61,7 +61,7 @@ namespace Phanerozoic.Duplication
 
             //// Read
             var firstRow = 2;
-            var maxRow = 100;
+            var maxRow = string.Empty;
             var startColumn = "A";
             var endColumn = "J";
             var range = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{maxRow}";
@@ -86,7 +86,7 @@ namespace Phanerozoic.Duplication
 
             //// Read
             var firstRow = 1;
-            var maxRow = 100;
+            var maxRow = string.Empty;
             var startColumn = "A";
             var endColumn = "BH";
             var range = $"{sheetName}!{startColumn}{firstRow}:{endColumn}{maxRow}";
