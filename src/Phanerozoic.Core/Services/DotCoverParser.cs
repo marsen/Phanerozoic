@@ -36,7 +36,10 @@ namespace Phanerozoic.Core.Services
             //// Set Repository
             result.ForEach(i =>
             {
-                i.Method = i.Method.Substring(0, i.Method.IndexOf('('));
+                if (i.Method.Contains('('))
+                {
+                    i.Method = i.Method.Substring(0, i.Method.IndexOf('('));
+                }
                 i.Repository = coverageEntity.Repository;
             });
 
@@ -76,6 +79,19 @@ namespace Phanerozoic.Core.Services
                         Coverage = (int)item.CoveragePercent,
                     };
                     result.Add(covearge);
+                }
+                else if (item.Kind == Kind.Type)
+                {
+                    var coverage = new MethodEntity
+                    {
+                        Project = assembly,
+                        Class = iName + item.Name,
+                        Method = "*",
+                        Coverage = (int)item.CoveragePercent,
+                    };
+                    result.Add(coverage);
+                    iName += $"{item.Name}.";
+                    FindMethod(result, assembly, iName, item.Children);
                 }
                 else if (item.Kind == Kind.Assembly)
                 {

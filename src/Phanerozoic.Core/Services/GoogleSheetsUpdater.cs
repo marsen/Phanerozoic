@@ -32,7 +32,7 @@ namespace Phanerozoic.Core.Services
             Console.WriteLine($"Repository: {coverageEntity.Repository}, Project: {coverageEntity.Project}, Method Count: {reportMethodList.Count}/{reportMethodTotalCount}");
 
             var startIndex = 1;
-            var maxRow = 100;
+            var maxRow = string.Empty;
             var sheetName = "Coverage";
             IList<MethodEntity> sheetMethodList = new List<MethodEntity>();
             IList<IList<object>> values = this._googleSheetsService.GetValues(this._sheetsId, $"{sheetName}!A{startIndex + 1}:I{maxRow}");

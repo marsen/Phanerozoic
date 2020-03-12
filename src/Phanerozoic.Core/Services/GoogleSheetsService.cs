@@ -127,6 +127,26 @@ namespace Phanerozoic.Core.Services
             //Console.WriteLine(JsonSerializer.Serialize(response));
         }
 
+        public void CreateSheet(string spreadsheetId, string sheetName)
+        {
+            var sheetService = this.GetSheetsService();
+
+            // Add new Sheet
+            var addSheetRequest = new AddSheetRequest();
+            addSheetRequest.Properties = new SheetProperties();
+            addSheetRequest.Properties.Title = sheetName;
+            BatchUpdateSpreadsheetRequest batchUpdateSpreadsheetRequest = new BatchUpdateSpreadsheetRequest();
+            batchUpdateSpreadsheetRequest.Requests = new List<Request>();
+            batchUpdateSpreadsheetRequest.Requests.Add(new Request
+            {
+                AddSheet = addSheetRequest
+            });
+
+            var batchUpdateRequest = sheetService.Spreadsheets.BatchUpdate(batchUpdateSpreadsheetRequest, spreadsheetId);
+
+            batchUpdateRequest.Execute();
+        }
+
         private SheetsService GetSheetsService()
         {
             var credential = this.GetCredential(this._credentialType, this._credentialsPath);
