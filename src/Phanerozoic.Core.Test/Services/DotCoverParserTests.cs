@@ -1,26 +1,29 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Phanerozoic.Core.Entities;
 using Phanerozoic.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
 using Xunit;
 
 namespace Phanerozoic.Core.Services.Tests
 {
     public class DotCoverParserTests
     {
-        private readonly IServiceProvider _subServiceProvider;
-        private readonly IFileHelper _subFileHelper;
+        private readonly IServiceProvider _stubServiceProvider;
+        private readonly IFileHelper _stubFileHelper;
+        private readonly IConfiguration _stubConfiguration;
 
         public DotCoverParserTests()
         {
-            this._subFileHelper = Substitute.For<IFileHelper>();
+            this._stubFileHelper = Substitute.For<IFileHelper>();
+            this._stubConfiguration = Substitute.For<IConfiguration>();
 
-            this._subServiceProvider = Substitute.For<IServiceProvider>();
-            this._subServiceProvider.GetService<IFileHelper>().Returns(this._subFileHelper);
+            this._stubServiceProvider = Substitute.For<IServiceProvider>();
+            this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
         }
 
         [Fact(DisplayName = "取得涵蓋率資料")]
@@ -95,23 +98,28 @@ namespace Phanerozoic.Core.Services.Tests
             };
             string reportJson = JsonSerializer.Serialize(report);
 
-            this._subFileHelper.ReadAllText(Arg.Any<string>()).Returns(reportJson);
+            this._stubFileHelper.ReadAllText(Arg.Any<string>()).Returns(reportJson);
+
+            var coverageEntity = new CoverageEntity
+            {
+                Repository = "Phanerozoic",
+            };
 
             var reportEntity = new ReportEntity
             {
-                FilePath = "report.json"
+                FilePath = "report.json",
             };
 
             //// act
             var target = GetTarget();
-            var actual = target.Parser(reportEntity);
+            var actual = target.Parser(coverageEntity, reportEntity);
 
-            actual.Count.Should().Be(1);
+            actual.Count.Should().Be(2);
         }
 
         private DotCoverParser GetTarget()
         {
-            return new DotCoverParser(this._subServiceProvider);
+            return new DotCoverParser(this._stubServiceProvider, this._stubConfiguration);
         }
     }
 }

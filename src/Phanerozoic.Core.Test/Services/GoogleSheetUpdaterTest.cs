@@ -12,22 +12,21 @@ namespace Phanerozoic.Core.Test.Services
 {
     public class GoogleSheetUpdaterTest
     {
-        private readonly IFileHelper _subFileHelper;
-        private readonly IConfiguration _subConfiguration;
-        private readonly IGoogleSheetsService _subGoogleSheetsService;
-        private readonly IServiceProvider _subServiceProvider;
+        private readonly IFileHelper _stubFileHelper;
+        private readonly IConfiguration _stubConfiguration;
+        private readonly IGoogleSheetsService _stubGoogleSheetsService;
+        private readonly IServiceProvider _stubServiceProvider;
 
         public GoogleSheetUpdaterTest()
         {
-            this._subFileHelper = Substitute.For<IFileHelper>();
-            this._subConfiguration = Substitute.For<IConfiguration>();
-            this._subGoogleSheetsService = Substitute.For<IGoogleSheetsService>();
+            this._stubFileHelper = Substitute.For<IFileHelper>();
+            this._stubConfiguration = Substitute.For<IConfiguration>();
+            this._stubGoogleSheetsService = Substitute.For<IGoogleSheetsService>();
 
-            this._subServiceProvider = Substitute.For<IServiceProvider>();
-            this._subServiceProvider.GetService<IFileHelper>().Returns(this._subFileHelper);
-            this._subServiceProvider.GetService<IConfiguration>().Returns(this._subConfiguration);
-            this._subServiceProvider.GetService<IGoogleSheetsService>().Returns(this._subGoogleSheetsService);
-
+            this._stubServiceProvider = Substitute.For<IServiceProvider>();
+            this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
+            this._stubServiceProvider.GetService<IConfiguration>().Returns(this._stubConfiguration);
+            this._stubServiceProvider.GetService<IGoogleSheetsService>().Returns(this._stubGoogleSheetsService);
         }
 
         [Fact]
@@ -37,14 +36,14 @@ namespace Phanerozoic.Core.Test.Services
             var coverageEntity = new CoverageEntity();
             var methodList = new List<MethodEntity>();
 
-            this._subConfiguration["Google.Sheets.SheetsId"].Returns("target Id");
+            this._stubConfiguration["Google.Sheets.SheetsId"].Returns("target Id");
 
             //// Act
-            var target = new GoogleSheetsUpdater(this._subServiceProvider, this._subConfiguration);
+            var target = new GoogleSheetsUpdater(this._stubServiceProvider, this._stubConfiguration);
             target.Update(coverageEntity, methodList);
 
             //// Assert
-            this._subGoogleSheetsService.Received(1).GetValues(Arg.Any<string>(), Arg.Any<string>());
+            this._stubGoogleSheetsService.Received(1).GetValues(Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }

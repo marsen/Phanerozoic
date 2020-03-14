@@ -11,15 +11,15 @@ namespace Phanerozoic.Core.Test.Services
 {
     public class FileUpdaterTests
     {
-        private IServiceProvider _subServiceProvider;
-        private IFileHelper _subFileHelper;
+        private IServiceProvider _stubServiceProvider;
+        private IFileHelper _stubFileHelper;
 
         public FileUpdaterTests()
         {
-            this._subFileHelper = Substitute.For<IFileHelper>();
+            this._stubFileHelper = Substitute.For<IFileHelper>();
 
-            this._subServiceProvider = Substitute.For<IServiceProvider>();
-            this._subServiceProvider.GetService<IFileHelper>().Returns(this._subFileHelper);
+            this._stubServiceProvider = Substitute.For<IServiceProvider>();
+            this._stubServiceProvider.GetService<IFileHelper>().Returns(this._stubFileHelper);
         }
 
         [Fact]
@@ -33,11 +33,11 @@ namespace Phanerozoic.Core.Test.Services
             };
 
             //// Act
-            var target = new FileUpdater(this._subServiceProvider);
+            var target = new FileUpdater(this._stubServiceProvider);
             target.Update(coverageEntity, methodList);
 
             //// Assert
-            this._subFileHelper.Received(1).WriteAllText(Arg.Any<string>(), Arg.Any<string>());
+            this._stubFileHelper.Received(1).WriteAllText(Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }

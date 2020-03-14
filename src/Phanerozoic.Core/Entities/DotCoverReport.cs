@@ -24,5 +24,23 @@ namespace Phanerozoic.Core.Entities
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum Kind { Root, AnonymousMethod, Assembly, AutoProperty, Constructor, InternalCompiledMethod, Method, Namespace, OwnCoverage, Property, PropertyGetter, PropertySetter, Type };
+    public enum Kind
+    {
+        Root,
+        AnonymousMethod,
+        Assembly,
+        AutoProperty,
+        Constructor,
+        InternalCompiledMethod,
+        Method,
+        Namespace,
+        OwnCoverage,
+        Property,
+        PropertyGetter,
+        PropertySetter,
+        Type,
+        Event,
+        EventAdder,
+        EventRemover,
+    };
 }
